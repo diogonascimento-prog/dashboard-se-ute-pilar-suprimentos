@@ -150,19 +150,21 @@
     </div>
 
     <div class="panel">
+      <h2>Filtrar por obra</h2>
+      <div class="panel-sub">"Total" soma as duas obras. Combina com o filtro de equipamento acima.</div>
+      <div class="equip-filter" id="obra-filter"></div>
+    </div>
+
+    <div class="panel">
       <h2>Visão gerencial</h2>
       <div class="panel-sub" id="charts-sub">Todos os equipamentos · <span id="charts-count"></span> itens em cotação</div>
       <div class="charts-grid">
-        <div class="chart-box">
-          <div class="chart-title">Quantidade orçada por equipamento</div>
-          <div id="chart-qtd" class="chart-body"></div>
-        </div>
         <div class="chart-box">
           <div class="chart-title">Com quem está (situação atual)</div>
           <div id="chart-holder" class="chart-body"></div>
         </div>
         <div class="chart-box">
-          <div class="chart-title">Itens por fornecedor</div>
+          <div class="chart-title">Equipamentos distintos por fornecedor</div>
           <div id="chart-forn" class="chart-body"></div>
         </div>
         <div class="chart-box">
@@ -324,13 +326,18 @@ const OBRA_COLOR = { "SE UTE PILAR": "var(--s1)", "SE RIO LARGO II": "var(--s2)"
 
 /* ---- Filter state ---- */
 let equipFilter = null;           // null = todos, senão categoria_code
+let obraFilter = null;            // null = total (soma as duas obras), senão nome da obra
 let tempoSortKey = null, tempoSortDir = 1;
 
-const getFiltered = () => equipFilter ? pcItems.filter(i => i.categoria_code === equipFilter) : pcItems;
+const getFiltered = () => pcItems.filter(i =>
+  (equipFilter ? i.categoria_code === equipFilter : true) &&
+  (obraFilter ? i.empreendimento === obraFilter : true)
+);
 
 /* ---- Elements ---- */
 const statRowRevisoes = document.getElementById("stat-row-revisoes");
 const filterEl = document.getElementById("equip-filter");
+const obraFilterEl = document.getElementById("obra-filter");
 const tempoBody = document.querySelector("#tempo-table tbody");
 
 /* ---- KPI tiles (filter-aware) ---- */
@@ -339,10 +346,11 @@ function renderStats(items) {
   const comForn = items.filter(i => i.holderCls === "chip-forn").length;
   const atras = items.filter(i => i.dias != null && i.dias > LATE_THRESHOLD_DAYS).length;
   const media = items.length ? (items.reduce((s,i) => s + (i.dias||0), 0) / items.length).toFixed(1) : "—";
-  const escopo = equipFilter ? catShort(equipFilter) : "todos os equipamentos";
+  const escopoParts = [equipFilter ? catShort(equipFilter) : "todos os equipamentos"];
+  if (obraFilter) escopoParts.push(obraFilter);
   statRowRevisoes.innerHTML = "";
   [
-    { label: "Itens em cotação", value: items.length, sub: escopo },
+    { label: "Itens em cotação", value: items.length, sub: escopoParts.join(" · ") },
     { label: "Com nossa Engenharia", value: comEng, sub: "aguardando nossa análise" },
     { label: "Com o Fornecedor", value: comForn, sub: "aguardando retorno deles" },
     { label: `Parados > ${LATE_THRESHOLD_DAYS} dias`, value: atras, sub: "possível gargalo", alert: atras > 0 },
@@ -357,28 +365,25 @@ function groupCount(items, keyFn) {
   return Object.entries(m).map(([label, value]) => ({ label, value }));
 }
 function renderCharts(items) {
-  // Quantidade orçada por equipamento (soma de qtd)
-  const qtdMap = {};
-  items.forEach(i => { qtdMap[i.categoria_code] = (qtdMap[i.categoria_code]||0) + (i.qtd||0); });
-  const qtdData = Object.entries(qtdMap).map(([code, value]) => ({ label: catShort(code), value, code }));
-  renderBarChart("chart-qtd", qtdData, lbl => catColor((qtdData.find(d=>d.label===lbl)||{}).code));
-
   // Com quem está
   const holderData = groupCount(items, i => i.holder);
   const holderClsByLabel = {}; items.forEach(i => holderClsByLabel[i.holder] = i.holderCls);
   renderBarChart("chart-holder", holderData, lbl => HOLDER_COLOR[holderClsByLabel[lbl]] || "var(--s9)");
 
-  // Itens por fornecedor
-  const fornData = groupCount(items, i => i.fornecedor);
+  // Equipamentos distintos por fornecedor (conta categorias diferentes, não linhas/obras repetidas)
+  const fornCatMap = {};
+  items.forEach(i => { (fornCatMap[i.fornecedor] = fornCatMap[i.fornecedor] || new Set()).add(i.categoria_code); });
+  const fornData = Object.entries(fornCatMap).map(([label, set]) => ({ label, value: set.size }));
   renderBarChart("chart-forn", fornData, lbl => { const idx = fornData.findIndex(d=>d.label===lbl); return PALETTE[idx % PALETTE.length]; });
 
   // Itens por obra
   const obraData = groupCount(items, i => i.empreendimento);
   renderBarChart("chart-obra", obraData, lbl => OBRA_COLOR[lbl] || "var(--s9)");
 
+  const escopoParts = [equipFilter ? catShort(equipFilter) : "Todos os equipamentos"];
+  if (obraFilter) escopoParts.push(obraFilter);
   document.getElementById("charts-sub").innerHTML =
-    (equipFilter ? `<b>${catShort(equipFilter)}</b>` : "Todos os equipamentos") +
-    ` · <span id="charts-count">${items.length}</span> itens`;
+    escopoParts.join(" · ") + ` · <span id="charts-count">${items.length}</span> itens`;
 }
 
 /* ---- Detail table (filter + sort aware) ---- */
@@ -405,13 +410,17 @@ function renderTempoTable() {
       <td class="num">${i.dias ?? "—"}</td><td>${fmtDate(i.data_referencia_status)}</td>`;
     tempoBody.appendChild(tr);
   });
+  const escopoParts = [];
+  if (equipFilter) escopoParts.push(catShort(equipFilter));
+  if (obraFilter) escopoParts.push(obraFilter);
   document.getElementById("tempo-sub").textContent =
-    `${sorted.length} ${sorted.length===1?"item":"itens"}` + (equipFilter ? ` · ${catShort(equipFilter)}` : " · todos os equipamentos");
+    `${sorted.length} ${sorted.length===1?"item":"itens"}` + (escopoParts.length ? ` · ${escopoParts.join(" · ")}` : " · todos os equipamentos, todas as obras");
 }
 
-/* ---- Filter chips ---- */
+/* ---- Filter chips (equipamento) ---- */
 function renderFilterChips() {
   filterEl.innerHTML = "";
+  const baseItems = obraFilter ? pcItems.filter(i => i.empreendimento === obraFilter) : pcItems;
   const mkChip = (code, label, count, isLate) => {
     const b = document.createElement("button");
     b.className = "filter-chip" + (equipFilter === code ? " active" : "") + (isLate ? " alert" : "");
@@ -419,12 +428,31 @@ function renderFilterChips() {
     b.addEventListener("click", () => { equipFilter = (equipFilter === code) ? null : code; refresh(); });
     filterEl.appendChild(b);
   };
-  const allLate = pcItems.some(i => i.dias != null && i.dias > LATE_THRESHOLD_DAYS);
-  mkChip(null, "Todos", pcItems.length, false);
+  mkChip(null, "Todos", baseItems.length, false);
   pcCategories.forEach(cat => {
-    const items = pcItems.filter(i => i.categoria_code === cat.code);
+    const items = baseItems.filter(i => i.categoria_code === cat.code);
     const isLate = items.some(i => i.dias != null && i.dias > LATE_THRESHOLD_DAYS);
     mkChip(cat.code, catShort(cat.code), items.length, isLate);
+  });
+}
+
+/* ---- Filter chips (obra) ---- */
+const OBRAS = [...new Set(pcItems.map(i => i.empreendimento))];
+function renderObraFilterChips() {
+  obraFilterEl.innerHTML = "";
+  const baseItems = equipFilter ? pcItems.filter(i => i.categoria_code === equipFilter) : pcItems;
+  const mkChip = (obra, label, count, isLate) => {
+    const b = document.createElement("button");
+    b.className = "filter-chip" + (obraFilter === obra ? " active" : "") + (isLate ? " alert" : "");
+    b.innerHTML = `${isLate && obraFilter!==obra ? '<span class="fc-dot"></span>' : ""}${label}<span class="fc-count">${count}</span>`;
+    b.addEventListener("click", () => { obraFilter = (obraFilter === obra) ? null : obra; refresh(); });
+    obraFilterEl.appendChild(b);
+  };
+  mkChip(null, "Total", baseItems.length, false);
+  OBRAS.forEach(obra => {
+    const items = baseItems.filter(i => i.empreendimento === obra);
+    const isLate = items.some(i => i.dias != null && i.dias > LATE_THRESHOLD_DAYS);
+    mkChip(obra, obra, items.length, isLate);
   });
 }
 
@@ -432,6 +460,7 @@ function renderFilterChips() {
 function refresh() {
   const items = getFiltered();
   renderFilterChips();
+  renderObraFilterChips();
   renderStats(items);
   renderCharts(items);
   renderTempoTable();
