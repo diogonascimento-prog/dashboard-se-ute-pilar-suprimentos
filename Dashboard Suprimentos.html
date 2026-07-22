@@ -139,12 +139,14 @@
       <div><div id="chart-holder"></div></div>
       <div><div id="chart-fornecedor-dias"></div></div>
     </div>
+
     <div class="table-scroll" style="margin-top:14px">
       <table class="data" id="tempo-table">
         <thead><tr>
           <th data-k="item">Item</th><th data-k="categoria_nome">Categoria</th><th data-k="fornecedor">Fornecedor</th>
+          <th data-k="qtd">Qtd. orçada</th><th data-k="empreendimento">Obra</th>
           <th data-k="rev_atual">Rev.</th><th data-k="status_atual">Status</th><th data-k="holder">Com quem</th>
-          <th data-k="dias">Dias na fase</th><th data-k="data_ref">Desde</th>
+          <th data-k="dias">Dias na fase</th><th data-k="data_ref">Desde (data)</th>
         </tr></thead>
         <tbody></tbody>
       </table>
@@ -289,6 +291,7 @@ function renderTempoTable(key, dir) {
     const tr = document.createElement("tr");
     if (i.dias != null && i.dias > LATE_THRESHOLD_DAYS) tr.className = "late";
     tr.innerHTML = `<td>${i.item}</td><td class="wrap">${i.categoria_nome}</td><td>${i.fornecedor}</td>
+      <td class="num">${i.qtd ?? "—"}</td><td>${i.empreendimento || "—"}</td>
       <td>${i.rev_atual||"—"}</td><td class="wrap">${(i.status_atual||"—").trim()}</td>
       <td><span class="chip ${i.holderCls}">${i.holder}</span></td>
       <td class="num">${i.dias ?? "—"}</td><td>${fmtDate(i.data_referencia_status)}</td>`;
