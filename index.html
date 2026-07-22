@@ -1,4 +1,4 @@
-<title>Controle de Suprimentos — Pré Contrato — SE UTE Pilar / SE Rio Largo II</title>
+<title>Controle de Suprimentos — SE UTE Pilar / SE Rio Largo II</title>
 <style>
   .viz-root {
     color-scheme: light;
@@ -11,6 +11,7 @@
     --chip-forn-bg: color-mix(in srgb, #fab219 24%, transparent); --chip-forn-fg: #8a5c00;
     --chip-done-bg: color-mix(in srgb, #0ca30c 16%, transparent); --chip-done-fg: #006300;
     --chip-late-bg: color-mix(in srgb, #d03b3b 16%, transparent); --chip-late-fg: #a12b2b;
+    --chip-neutral-bg: #ececea; --chip-neutral-fg: #52514e;
   }
   @media (prefers-color-scheme: dark) {
     :root:where(:not([data-theme="light"])) .viz-root {
@@ -23,6 +24,7 @@
       --chip-forn-bg: color-mix(in srgb, #fab219 30%, transparent); --chip-forn-fg: #ffd684;
       --chip-done-bg: color-mix(in srgb, #0ca30c 26%, transparent); --chip-done-fg: #8fe08f;
       --chip-late-bg: color-mix(in srgb, #d03b3b 30%, transparent); --chip-late-fg: #ffb3b3;
+      --chip-neutral-bg: #2c2c2a; --chip-neutral-fg: #c3c2b7;
     }
   }
   :root[data-theme="dark"] .viz-root {
@@ -35,26 +37,31 @@
     --chip-forn-bg: color-mix(in srgb, #fab219 30%, transparent); --chip-forn-fg: #ffd684;
     --chip-done-bg: color-mix(in srgb, #0ca30c 26%, transparent); --chip-done-fg: #8fe08f;
     --chip-late-bg: color-mix(in srgb, #d03b3b 30%, transparent); --chip-late-fg: #ffb3b3;
+    --chip-neutral-bg: #2c2c2a; --chip-neutral-fg: #c3c2b7;
   }
 
   .viz-root { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; background: var(--page); color: var(--text-primary);
-    padding: 28px clamp(12px, 4vw, 40px) 60px; max-width: 1400px; margin: 0 auto; }
+    padding: 24px clamp(12px, 3vw, 36px) 60px; max-width: 1400px; margin: 0 auto; }
   .viz-root * { box-sizing: border-box; }
   .viz-root h1, .viz-root h2, .viz-root h3 { margin: 0; font-weight: 700; }
   .viz-root table { border-collapse: collapse; width: 100%; }
 
   .header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 12px;
-    margin-bottom: 22px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+    margin-bottom: 18px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
   .header h1 { font-size: 22px; letter-spacing: -0.01em; }
   .header .sub { color: var(--text-secondary); font-size: 13px; margin-top: 4px; }
   .header .meta { text-align: right; color: var(--text-muted); font-size: 12px; }
 
-  .nav-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
-  .nav-pills a { font-size: 12px; padding: 6px 12px; border-radius: 999px; background: var(--surface-1); border: 1px solid var(--border);
-    color: var(--text-secondary); text-decoration: none; font-weight: 600; }
-  .nav-pills a:hover { color: var(--text-primary); border-color: var(--s1); }
+  /* ---- BI-style tabs ---- */
+  .tabs-bar { display: flex; gap: 4px; margin-bottom: 22px; border-bottom: 2px solid var(--border); flex-wrap: wrap; }
+  .tab-btn { padding: 11px 18px; font: inherit; font-size: 13.5px; font-weight: 700; color: var(--text-secondary);
+    background: none; border: none; border-bottom: 3px solid transparent; margin-bottom: -2px; cursor: pointer; }
+  .tab-btn:hover { color: var(--text-primary); }
+  .tab-btn.active { color: var(--s1); border-bottom-color: var(--s1); }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
 
-  .stat-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 24px; }
+  .stat-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin-bottom: 20px; }
   .stat-tile { background: var(--surface-1); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
   .stat-tile.alert { border-color: color-mix(in srgb, var(--status-critical) 45%, var(--border)); }
   .stat-tile .label { font-size: 12px; color: var(--text-secondary); margin-bottom: 6px; }
@@ -62,26 +69,15 @@
   .stat-tile.alert .value { color: var(--status-critical); }
   .stat-tile .sub { font-size: 11.5px; color: var(--text-muted); margin-top: 4px; }
 
-  .panel { background: var(--surface-1); border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px; margin-bottom: 20px; scroll-margin-top: 16px; }
-  .panel.priority { border-width: 1.5px; border-color: color-mix(in srgb, var(--s1) 35%, var(--border)); }
+  .panel { background: var(--surface-1); border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px; margin-bottom: 20px; }
   .panel h2 { font-size: 15px; margin-bottom: 2px; }
   .panel .panel-sub { font-size: 12px; color: var(--text-secondary); margin-bottom: 14px; }
-  .panel .eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.04em; color: var(--s1); text-transform: uppercase; margin-bottom: 4px; }
-
-  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-  @media (max-width: 820px) { .grid-2 { grid-template-columns: 1fr; } }
 
   .bar-row { display: grid; grid-template-columns: 130px 1fr 108px; align-items: center; gap: 10px; margin-bottom: 10px; }
   .bar-row .bname { font-size: 12.5px; color: var(--text-primary); font-weight: 600; }
   .bar-track { position: relative; height: 20px; background: var(--grid); border-radius: 4px; overflow: hidden; }
   .bar-fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 4px; }
   .bar-val { font-size: 12px; color: var(--text-secondary); text-align: right; font-variant-numeric: tabular-nums; }
-
-  .legend { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 10px; font-size: 12px; color: var(--text-secondary); }
-  .legend .dot { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
-
-  .filters { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
-  .filters select { font: inherit; font-size: 13px; padding: 7px 10px; border-radius: 7px; border: 1px solid var(--border); background: var(--surface-1); color: var(--text-primary); }
 
   table.data th, table.data td { text-align: left; padding: 8px 10px; font-size: 12.5px; border-bottom: 1px solid var(--grid); white-space: nowrap; }
   table.data td.wrap { white-space: normal; max-width: 300px; }
@@ -90,8 +86,7 @@
   table.data th:hover { color: var(--text-primary); }
   table.data tbody tr:hover { background: var(--grid); }
   table.data tbody tr.late { background: color-mix(in srgb, var(--status-critical) 7%, transparent); }
-  table.data tbody tr.group-row td { font-weight: 700; background: var(--page); position: sticky; left: 0; }
-  .table-scroll { overflow-x: auto; max-height: 520px; overflow-y: auto; border: 1px solid var(--border); border-radius: 8px; }
+  .table-scroll { overflow-x: auto; max-height: 480px; overflow-y: auto; border: 1px solid var(--border); border-radius: 8px; }
   .num { text-align: right; font-variant-numeric: tabular-nums; }
 
   .chip { display: inline-flex; align-items: center; gap: 5px; padding: 3px 9px; border-radius: 999px; font-size: 11px; font-weight: 600; white-space: nowrap; }
@@ -99,15 +94,30 @@
   .chip-forn { background: var(--chip-forn-bg); color: var(--chip-forn-fg); }
   .chip-done { background: var(--chip-done-bg); color: var(--chip-done-fg); }
   .chip-late { background: var(--chip-late-bg); color: var(--chip-late-fg); }
-  .chip-com { background: color-mix(in srgb, var(--status-good) 16%, transparent); color: var(--status-good); }
-  .chip-agv { background: var(--chip-agv-bg); color: var(--chip-agv-fg); }
+  .chip-neutral { background: var(--chip-neutral-bg); color: var(--chip-neutral-fg); }
 
-  .best-price { font-weight: 700; color: var(--status-good); }
-  .matrix-table th, .matrix-table td { text-align: center; }
-  .matrix-table td:first-child, .matrix-table th:first-child { text-align: left; position: sticky; left: 0; background: var(--surface-1); }
-  .price-pair { display: flex; flex-direction: column; gap: 1px; }
-  .price-pair .unit { font-size: 10.5px; color: var(--text-muted); }
-  .qty-badge { font-size: 10.5px; color: var(--text-muted); font-weight: 400; }
+
+  /* ---- Equipment filter chips ---- */
+  .equip-filter { display: flex; flex-wrap: wrap; gap: 8px; }
+  .filter-chip { font: inherit; font-size: 12.5px; font-weight: 600; cursor: pointer;
+    padding: 7px 14px; border-radius: 999px; border: 1px solid var(--border);
+    background: var(--surface-1); color: var(--text-secondary); transition: all .12s; display: inline-flex; align-items: center; gap: 7px; }
+  .filter-chip:hover { color: var(--text-primary); border-color: var(--baseline); }
+  .filter-chip .fc-count { font-size: 11px; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+  .filter-chip.active { background: var(--s1); border-color: var(--s1); color: #fff; }
+  .filter-chip.active .fc-count { color: rgba(255,255,255,0.8); }
+  .filter-chip.alert:not(.active) { border-color: color-mix(in srgb, var(--status-critical) 50%, var(--border)); }
+  .filter-chip .fc-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--status-critical); }
+
+  /* ---- Managerial charts grid ---- */
+  .charts-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px 28px; }
+  @media (max-width: 720px) { .charts-grid { grid-template-columns: 1fr; } }
+  .chart-title { font-size: 12.5px; font-weight: 700; color: var(--text-primary); margin-bottom: 12px; }
+  .chart-body:empty::after { content: "Sem dados para este filtro"; font-size: 12px; color: var(--text-muted); }
+  .chart-body .bar-row { grid-template-columns: 132px 1fr 52px; }
+  .chart-body .bname { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  .ec-forn-list { display: flex; flex-wrap: wrap; gap: 5px; }
 
   .note { font-size: 12px; color: var(--text-muted); margin-top: 10px; line-height: 1.5; }
   .foot { text-align: center; color: var(--text-muted); font-size: 11.5px; margin-top: 30px; }
@@ -117,80 +127,117 @@
 
   <div class="header">
     <div>
-      <h1>Controle de Suprimentos — Pré Contrato</h1>
-      <div class="sub">SE UTE Pilar / LT / SE Rio Largo II · 230 kV · fontes: Pré Contrato · MC - UNT COM DIFAL · Checklist · Controle WEG · Procurement</div>
+      <h1>Controle de Suprimentos</h1>
+      <div class="sub">SE UTE Pilar / LT / SE Rio Largo II · 230 kV</div>
     </div>
     <div class="meta">Atualizado em <span id="updated-date"></span></div>
   </div>
 
-  <div class="nav-pills">
-    <a href="#sec-tempo">Tempo de análise</a>
-    <a href="#sec-mc">Fornecedores por equipamento</a>
-    <a href="#sec-weg">Controle WEG</a>
-    <a href="#sec-procurement">Procurement</a>
+  <div class="tabs-bar" id="tabs-bar">
+    <button class="tab-btn active" data-tab="tab-revisoes">Revisões &amp; Equipamentos</button>
+    <button class="tab-btn" data-tab="tab-weg">Controle WEG</button>
+    <button class="tab-btn" data-tab="tab-procurement">Procurement</button>
   </div>
 
-  <div class="panel priority" id="sec-tempo">
-    <div class="eyebrow">Prioridade — controle de revisões</div>
-    <h2>Tempo de análise — quem está com o quê</h2>
-    <div class="panel-sub" id="tempo-sub"></div>
-    <div class="stat-row" id="stat-row-time"></div>
-    <div class="grid-2">
-      <div><div id="chart-holder"></div></div>
-      <div><div id="chart-fornecedor-dias"></div></div>
+  <!-- ============================= TAB 1: REVISÕES & EQUIPAMENTOS (unificada) ============================= -->
+  <div class="tab-content active" id="tab-revisoes">
+    <div class="stat-row" id="stat-row-revisoes"></div>
+
+    <div class="panel">
+      <h2>Filtrar por equipamento</h2>
+      <div class="panel-sub">Selecione um equipamento para focar os gráficos e a tabela abaixo. Clique de novo (ou em "Todos") para limpar.</div>
+      <div class="equip-filter" id="equip-filter"></div>
     </div>
 
-    <div class="table-scroll" style="margin-top:14px">
-      <table class="data" id="tempo-table">
-        <thead><tr>
-          <th data-k="item">Item</th><th data-k="categoria_nome">Categoria</th><th data-k="fornecedor">Fornecedor</th>
-          <th data-k="qtd">Qtd. orçada</th><th data-k="empreendimento">Obra</th>
-          <th data-k="rev_atual">Rev.</th><th data-k="status_atual">Status</th><th data-k="holder">Com quem</th>
-          <th data-k="dias">Dias na fase</th><th data-k="data_ref">Desde (data)</th>
-        </tr></thead>
-        <tbody></tbody>
-      </table>
+    <div class="panel">
+      <h2>Visão gerencial</h2>
+      <div class="panel-sub" id="charts-sub">Todos os equipamentos · <span id="charts-count"></span> itens em cotação</div>
+      <div class="charts-grid">
+        <div class="chart-box">
+          <div class="chart-title">Quantidade orçada por equipamento</div>
+          <div id="chart-qtd" class="chart-body"></div>
+        </div>
+        <div class="chart-box">
+          <div class="chart-title">Com quem está (situação atual)</div>
+          <div id="chart-holder" class="chart-body"></div>
+        </div>
+        <div class="chart-box">
+          <div class="chart-title">Itens por fornecedor</div>
+          <div id="chart-forn" class="chart-body"></div>
+        </div>
+        <div class="chart-box">
+          <div class="chart-title">Itens por obra</div>
+          <div id="chart-obra" class="chart-body"></div>
+        </div>
+      </div>
     </div>
-    <div class="note">Regra automática por palavra-chave (Engetécnica/Engenharia → nossa engenharia; Fornecedor → fornecedor; Aprovado/Concluído → concluído). Alerta em vermelho acima de 7 dias parado.</div>
-  </div>
 
-  <div class="panel" id="sec-mc">
-    <h2>Matriz comparativa — preço unitário e total (com DIFAL)</h2>
-    <div class="panel-sub" id="mc-sub">Mapa de cotação: quantidade cotada, preço unitário e total por fornecedor</div>
-    <div class="table-scroll" id="mc-matrix"></div>
-    <div class="note">"—" = fornecedor não cotou este item. Vencedor (menor preço) destacado em verde, calculado pela própria planilha (coluna "Melhores Preços").</div>
-  </div>
+    <div class="panel">
+      <h2>Detalhe por item</h2>
+      <div class="panel-sub" id="tempo-sub"></div>
+      <div class="table-scroll">
+        <table class="data" id="tempo-table">
+          <thead><tr>
+            <th data-k="item">Item</th><th data-k="categoria_nome">Categoria</th><th data-k="fornecedor">Fornecedor</th>
+            <th data-k="qtd">Qtd. orçada</th><th data-k="empreendimento">Obra</th>
+            <th data-k="rev_atual">Rev.</th><th data-k="holder">Com quem</th>
+            <th data-k="dias">Dias na fase</th><th data-k="data_ref">Desde</th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
 
-  <div class="panel" id="sec-weg">
-    <div class="eyebrow">Fonte: Controle WEG</div>
-    <h2>Documentos técnicos — WEG</h2>
-    <div class="panel-sub" id="weg-sub"></div>
-    <div class="table-scroll">
-      <table class="data" id="weg-table">
-        <thead><tr><th>Emissor</th><th>Título</th><th>Disciplina</th><th>Data prevista 1ª emissão</th><th>Status</th><th>Comentários</th></tr></thead>
-        <tbody></tbody>
-      </table>
+    <div class="panel">
+      <h2>Serviços complementares</h2>
+      <div class="panel-sub">Treinamento, supervisão de montagem e parametrização — cotados junto com os equipamentos, sem vínculo de revisão</div>
+      <div class="table-scroll">
+        <table class="data" id="servico-table">
+          <thead><tr>
+            <th>Serviço</th><th>Qtd.</th><th>Un.</th><th>Vencedor</th><th>Fornecedores que propuseram</th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
     </div>
   </div>
 
-  <div class="panel" id="sec-procurement">
-    <div class="eyebrow">Fonte: Procurement - Lista Controle R0</div>
-    <h2>Controle de compras — materiais e serviços da obra</h2>
-    <div class="panel-sub">Colunas selecionadas: Status, Obras, Material/Serviço, Fornecedor, SC, OC, Faturamento, dias desde abertura, observações</div>
-    <div class="table-scroll">
-      <table class="data" id="procurement-table">
-        <thead><tr>
-          <th data-k="id">Id</th><th data-k="status">Status</th><th data-k="obras">Obra</th><th data-k="materiaisouservicos">Material/Serviço</th>
-          <th data-k="fornecedor">Fornecedor</th><th data-k="sc">SC</th><th data-k="oc">OC</th><th data-k="faturamento">Faturamento</th>
-          <th data-k="dias">Dias desde abertura</th><th data-k="observacao">Observação</th>
-        </tr></thead>
-        <tbody></tbody>
-      </table>
+  <!-- ============================= TAB 2: CONTROLE WEG ============================= -->
+  <div class="tab-content" id="tab-weg">
+    <div class="stat-row" id="stat-row-weg"></div>
+    <div class="panel">
+      <h2>Documentos técnicos — WEG</h2>
+      <div class="panel-sub" id="weg-sub"></div>
+      <div class="table-scroll">
+        <table class="data" id="weg-table">
+          <thead><tr><th>Título</th><th>Disciplina</th><th>Data prevista 1ª emissão</th><th>Status</th><th>Dias até o prazo</th><th>Comentários</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================= TAB 3: PROCUREMENT ============================= -->
+  <div class="tab-content" id="tab-procurement">
+    <div class="stat-row" id="stat-row-procurement"></div>
+    <div class="panel">
+      <h2>Controle de compras — materiais e serviços da obra</h2>
+      <div class="panel-sub">Colunas selecionadas: Status, Obras, Material/Serviço, Fornecedor, SC, OC, Faturamento, dias desde abertura, observações</div>
+      <div class="table-scroll">
+        <table class="data" id="procurement-table">
+          <thead><tr>
+            <th data-k="id">Id</th><th data-k="status">Status</th><th data-k="obras">Obra</th><th data-k="materiaisouservicos">Material/Serviço</th>
+            <th data-k="fornecedor">Fornecedor</th><th data-k="sc">SC</th><th data-k="oc">OC</th><th data-k="faturamento">Faturamento</th>
+            <th data-k="dias">Dias desde abertura</th><th data-k="observacao">Observação</th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
     </div>
   </div>
 
   <div class="foot">
-    Dashboard gerado a partir de 5 abas de "1. Controle de Suprimentos.xlsx". Valores em R$. Dias calculados na data de abertura deste painel.
+    Dashboard gerado a partir de "1. Controle de Suprimentos.xlsx" (Pré Contrato, MC - UNT COM DIFAL, Controle WEG, Procurement). Sem valores financeiros — apenas quantidades, fornecedores e revisões.
   </div>
 </div>
 
@@ -202,10 +249,19 @@ const NOW = new Date();
 
 function fmtDate(iso) { if (!iso) return "—"; return new Date(iso).toLocaleDateString("pt-BR"); }
 function daysSince(iso) { if (!iso) return null; return Math.floor((NOW - new Date(iso)) / 86400000); }
-function fmtBRL(v) { if (v == null || isNaN(v)) return "—"; return v.toLocaleString("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 }); }
-function fmtBRLdec(v) { if (v == null || isNaN(v)) return "—"; return v.toLocaleString("pt-BR", { style: "currency", currency: "BRL" }); }
+function daysUntil(iso) { if (!iso) return null; return Math.floor((new Date(iso) - NOW) / 86400000); }
 
 document.getElementById("updated-date").textContent = NOW.toLocaleDateString("pt-BR");
+
+/* ---------------- Tabs ---------------- */
+document.querySelectorAll(".tab-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
+    btn.classList.add("active");
+    document.getElementById(btn.dataset.tab).classList.add("active");
+  });
+});
 
 function renderBarChart(containerId, data, colorFn) {
   const container = document.getElementById(containerId);
@@ -221,16 +277,22 @@ function renderBarChart(containerId, data, colorFn) {
     container.appendChild(row);
   });
 }
+function statTile(s) {
+  const el = document.createElement("div");
+  el.className = "stat-tile" + (s.alert ? " alert" : "");
+  el.innerHTML = `<div class="label">${s.label}</div><div class="value">${s.value}</div><div class="sub">${s.sub}</div>`;
+  return el;
+}
 
-/* =========================== 2. TEMPO DE ANÁLISE (Pré Contrato) =========================== */
+/* =========================== TAB 1: REVISÕES DE PROJETOS =========================== */
 function classifyHolder(status) {
-  if (!status) return { label: "Indefinido", cls: "chip-agv" };
+  if (!status) return { label: "Indefinido", cls: "chip-neutral" };
   const s = status.toUpperCase();
   if (s.includes("ENGETECNICA") || s.includes("ENGETÉCNICA") || s.includes("ENGENHARIA")) return { label: "Com nossa Engenharia", cls: "chip-eng" };
   if (s.includes("FORNECEDOR")) return { label: "Com o Fornecedor", cls: "chip-forn" };
   if (s.includes("APROVADO") || s.includes("CONCLU")) return { label: "Concluído", cls: "chip-done" };
   if (s.includes("REPROVADO") || s.includes("NÃO CONFORME") || s.includes("NAO CONFORME")) return { label: "Reprovado", cls: "chip-late" };
-  return { label: status.trim(), cls: "chip-agv" };
+  return { label: status.trim(), cls: "chip-neutral" };
 }
 
 const pcItems = RAW.precontrato.items.map(i => {
@@ -238,47 +300,92 @@ const pcItems = RAW.precontrato.items.map(i => {
   const dias = daysSince(i.data_referencia_status);
   return { ...i, holder: holder.label, holderCls: holder.cls, dias };
 });
+const pcCategories = RAW.precontrato.categories;
 const pcFornecedores = [...new Set(pcItems.map(i => i.fornecedor))];
-const PC_SUPPLIER_COLOR = {};
-pcFornecedores.forEach((f, idx) => PC_SUPPLIER_COLOR[f] = PALETTE[idx % PALETTE.length]);
 
-document.getElementById("tempo-sub").textContent = `${pcItems.length} itens em cotação na aba Pré Contrato — todos na Rev. ${pcItems[0]?.rev_atual || "0A"}, enviados em ${fmtDate(pcItems[0]?.data_referencia_status)}`;
+/* ---- Short labels + colors per equipment category ---- */
+const CAT_SHORT = {
+  "4.1": "Disjuntor",
+  "4.2": "Chave DAL (s/ terra)",
+  "4.3": "Chave DAL (c/ terra)",
+  "4.4": "Chave AVR",
+  "4.5": "Transf. Corrente (TC)",
+  "4.6": "Transf. Potencial (TP)",
+  "4.7": "Para-raios",
+};
+const catShort = code => CAT_SHORT[code] || code;
+const catColor = code => PALETTE[pcCategories.findIndex(c => c.code === code) % PALETTE.length];
+const HOLDER_COLOR = {
+  "chip-eng": "var(--s1)", "chip-forn": "var(--status-warning)",
+  "chip-done": "var(--status-good)", "chip-late": "var(--status-critical)",
+  "chip-neutral": "var(--s9)",
+};
+const OBRA_COLOR = { "SE UTE PILAR": "var(--s1)", "SE RIO LARGO II": "var(--s2)" };
 
-const comEngenharia = pcItems.filter(i => i.holderCls === "chip-eng");
-const comFornecedor = pcItems.filter(i => i.holderCls === "chip-forn");
-const atrasados = pcItems.filter(i => i.dias != null && i.dias > LATE_THRESHOLD_DAYS);
-const maxDias = pcItems.reduce((m,i) => (i.dias != null && i.dias > m) ? i.dias : m, 0);
-const mediaDias = (pcItems.reduce((s,i) => s + (i.dias||0), 0) / pcItems.length).toFixed(1);
+/* ---- Filter state ---- */
+let equipFilter = null;           // null = todos, senão categoria_code
+let tempoSortKey = null, tempoSortDir = 1;
 
-const statRowTime = document.getElementById("stat-row-time");
-[
-  { label: "Itens com nossa Engenharia", value: comEngenharia.length, sub: `de ${pcItems.length} itens em cotação` },
-  { label: "Itens com o Fornecedor", value: comFornecedor.length, sub: "aguardando retorno do fornecedor" },
-  { label: `Itens parados > ${LATE_THRESHOLD_DAYS} dias`, value: atrasados.length, sub: "possível gargalo", alert: atrasados.length>0 },
-  { label: "Tempo médio na fase atual", value: `${mediaDias} dias`, sub: `máximo: ${maxDias} dias` },
-].forEach(s => {
-  const el = document.createElement("div");
-  el.className = "stat-tile" + (s.alert ? " alert" : "");
-  el.innerHTML = `<div class="label">${s.label}</div><div class="value">${s.value}</div><div class="sub">${s.sub}</div>`;
-  statRowTime.appendChild(el);
-});
+const getFiltered = () => equipFilter ? pcItems.filter(i => i.categoria_code === equipFilter) : pcItems;
 
-const holderGroups = {};
-pcItems.forEach(i => { holderGroups[i.holder] = (holderGroups[i.holder]||0) + 1; });
-const HOLDER_COLORS = { "Com nossa Engenharia":"var(--s1)", "Com o Fornecedor":"var(--status-warning)", "Concluído":"var(--status-good)", "Reprovado":"var(--status-critical)" };
-renderBarChart("chart-holder", Object.entries(holderGroups).map(([k,v])=>({label:k,value:v,valueLabel:`${v} itens`})), (l) => HOLDER_COLORS[l] || "var(--s9)");
-
-const diasPorForn = pcFornecedores.map(f => {
-  const rows = pcItems.filter(i => i.fornecedor === f);
-  const avg = rows.reduce((s,i)=>s+(i.dias||0),0) / rows.length;
-  return { label: f, value: avg, valueLabel: `${avg.toFixed(1)} dias` };
-});
-renderBarChart("chart-fornecedor-dias", diasPorForn, (l) => PC_SUPPLIER_COLOR[l]);
-
+/* ---- Elements ---- */
+const statRowRevisoes = document.getElementById("stat-row-revisoes");
+const filterEl = document.getElementById("equip-filter");
 const tempoBody = document.querySelector("#tempo-table tbody");
-function renderTempoTable(key, dir) {
-  tempoBody.innerHTML = "";
-  const sorted = [...pcItems].sort((a,b) => {
+
+/* ---- KPI tiles (filter-aware) ---- */
+function renderStats(items) {
+  const comEng = items.filter(i => i.holderCls === "chip-eng").length;
+  const comForn = items.filter(i => i.holderCls === "chip-forn").length;
+  const atras = items.filter(i => i.dias != null && i.dias > LATE_THRESHOLD_DAYS).length;
+  const media = items.length ? (items.reduce((s,i) => s + (i.dias||0), 0) / items.length).toFixed(1) : "—";
+  const escopo = equipFilter ? catShort(equipFilter) : "todos os equipamentos";
+  statRowRevisoes.innerHTML = "";
+  [
+    { label: "Itens em cotação", value: items.length, sub: escopo },
+    { label: "Com nossa Engenharia", value: comEng, sub: "aguardando nossa análise" },
+    { label: "Com o Fornecedor", value: comForn, sub: "aguardando retorno deles" },
+    { label: `Parados > ${LATE_THRESHOLD_DAYS} dias`, value: atras, sub: "possível gargalo", alert: atras > 0 },
+    { label: "Tempo médio na fase", value: `${media}${media==="—"?"":"d"}`, sub: "itens filtrados" },
+  ].forEach(s => statRowRevisoes.appendChild(statTile(s)));
+}
+
+/* ---- Managerial charts (filter-aware) ---- */
+function groupCount(items, keyFn) {
+  const m = {};
+  items.forEach(i => { const k = keyFn(i); if (k == null) return; m[k] = (m[k]||0) + 1; });
+  return Object.entries(m).map(([label, value]) => ({ label, value }));
+}
+function renderCharts(items) {
+  // Quantidade orçada por equipamento (soma de qtd)
+  const qtdMap = {};
+  items.forEach(i => { qtdMap[i.categoria_code] = (qtdMap[i.categoria_code]||0) + (i.qtd||0); });
+  const qtdData = Object.entries(qtdMap).map(([code, value]) => ({ label: catShort(code), value, code }));
+  renderBarChart("chart-qtd", qtdData, lbl => catColor((qtdData.find(d=>d.label===lbl)||{}).code));
+
+  // Com quem está
+  const holderData = groupCount(items, i => i.holder);
+  const holderClsByLabel = {}; items.forEach(i => holderClsByLabel[i.holder] = i.holderCls);
+  renderBarChart("chart-holder", holderData, lbl => HOLDER_COLOR[holderClsByLabel[lbl]] || "var(--s9)");
+
+  // Itens por fornecedor
+  const fornData = groupCount(items, i => i.fornecedor);
+  renderBarChart("chart-forn", fornData, lbl => { const idx = fornData.findIndex(d=>d.label===lbl); return PALETTE[idx % PALETTE.length]; });
+
+  // Itens por obra
+  const obraData = groupCount(items, i => i.empreendimento);
+  renderBarChart("chart-obra", obraData, lbl => OBRA_COLOR[lbl] || "var(--s9)");
+
+  document.getElementById("charts-sub").innerHTML =
+    (equipFilter ? `<b>${catShort(equipFilter)}</b>` : "Todos os equipamentos") +
+    ` · <span id="charts-count">${items.length}</span> itens`;
+}
+
+/* ---- Detail table (filter + sort aware) ---- */
+function renderTempoTable() {
+  const items = getFiltered();
+  const key = tempoSortKey, dir = tempoSortDir;
+  const sorted = [...items].sort((a,b) => {
     if (!key) return (b.dias||0) - (a.dias||0);
     let av = a[key], bv = b[key];
     if (typeof av === "string") av = av.toLowerCase();
@@ -287,82 +394,118 @@ function renderTempoTable(key, dir) {
     if (bv == null) bv = -Infinity;
     return av > bv ? dir : av < bv ? -dir : 0;
   });
+  tempoBody.innerHTML = "";
   sorted.forEach(i => {
     const tr = document.createElement("tr");
     if (i.dias != null && i.dias > LATE_THRESHOLD_DAYS) tr.className = "late";
     tr.innerHTML = `<td>${i.item}</td><td class="wrap">${i.categoria_nome}</td><td>${i.fornecedor}</td>
       <td class="num">${i.qtd ?? "—"}</td><td>${i.empreendimento || "—"}</td>
-      <td>${i.rev_atual||"—"}</td><td class="wrap">${(i.status_atual||"—").trim()}</td>
+      <td>${i.rev_atual||"—"}</td>
       <td><span class="chip ${i.holderCls}">${i.holder}</span></td>
       <td class="num">${i.dias ?? "—"}</td><td>${fmtDate(i.data_referencia_status)}</td>`;
     tempoBody.appendChild(tr);
   });
+  document.getElementById("tempo-sub").textContent =
+    `${sorted.length} ${sorted.length===1?"item":"itens"}` + (equipFilter ? ` · ${catShort(equipFilter)}` : " · todos os equipamentos");
 }
-renderTempoTable(null, 1);
-let tempoSortKey = null, tempoSortDir = 1;
+
+/* ---- Filter chips ---- */
+function renderFilterChips() {
+  filterEl.innerHTML = "";
+  const mkChip = (code, label, count, isLate) => {
+    const b = document.createElement("button");
+    b.className = "filter-chip" + (equipFilter === code ? " active" : "") + (isLate ? " alert" : "");
+    b.innerHTML = `${isLate && equipFilter!==code ? '<span class="fc-dot"></span>' : ""}${label}<span class="fc-count">${count}</span>`;
+    b.addEventListener("click", () => { equipFilter = (equipFilter === code) ? null : code; refresh(); });
+    filterEl.appendChild(b);
+  };
+  const allLate = pcItems.some(i => i.dias != null && i.dias > LATE_THRESHOLD_DAYS);
+  mkChip(null, "Todos", pcItems.length, false);
+  pcCategories.forEach(cat => {
+    const items = pcItems.filter(i => i.categoria_code === cat.code);
+    const isLate = items.some(i => i.dias != null && i.dias > LATE_THRESHOLD_DAYS);
+    mkChip(cat.code, catShort(cat.code), items.length, isLate);
+  });
+}
+
+/* ---- Master refresh ---- */
+function refresh() {
+  const items = getFiltered();
+  renderFilterChips();
+  renderStats(items);
+  renderCharts(items);
+  renderTempoTable();
+}
+
 document.querySelectorAll("#tempo-table th[data-k]").forEach(th => {
   th.addEventListener("click", () => {
     const k = th.dataset.k;
     tempoSortDir = (tempoSortKey === k) ? -tempoSortDir : 1;
     tempoSortKey = k;
-    renderTempoTable(tempoSortKey, tempoSortDir);
+    renderTempoTable();
   });
 });
 
-/* =========================== 3. MC - FORNECEDORES & PREÇOS =========================== */
+refresh();
+
+/* =========================== TAB 2: FORNECEDORES & EQUIPAMENTOS =========================== */
 const mcItems = RAW.mc.items;
-const mcSupplierNames = [...new Set(mcItems.flatMap(i => Object.keys(i.propostas)))].filter(n => n !== "MELHORES PREÇOS");
-const MC_SUPPLIER_COLOR = {};
-mcSupplierNames.forEach((f, idx) => MC_SUPPLIER_COLOR[f] = PALETTE[idx % PALETTE.length]);
-
-document.getElementById("mc-sub").textContent = `${mcItems.length} itens no mapa de cotação — quantidade cotada, preço unitário e total por fornecedor`;
-
-function renderMcMatrix(container) {
-  let html = `<table class="data matrix-table"><thead><tr><th>Item</th>`;
-  mcSupplierNames.forEach(s => html += `<th>${s}</th>`);
-  html += `</tr></thead><tbody>`;
-  let lastGroup = null;
-  mcItems.forEach(item => {
-    if (item.grupo !== lastGroup) {
-      html += `<tr class="group-row"><td colspan="${mcSupplierNames.length+1}">${item.grupo}</td></tr>`;
-      lastGroup = item.grupo;
-    }
-    const unitPrices = {};
-    mcSupplierNames.forEach(s => {
-      const p = item.propostas[s];
-      if (p && p.incluso && p.unit_com_difal != null) unitPrices[s] = p.unit_com_difal;
-    });
-    const minPrice = Object.values(unitPrices).length ? Math.min(...Object.values(unitPrices)) : null;
-    html += `<tr><td class="wrap" style="max-width:280px">${item.n}. ${item.descricao.slice(0,55)}${item.descricao.length>55?"…":""} <span class="qty-badge">(cotando ${item.qtd} ${item.unidade||"un"})</span></td>`;
-    mcSupplierNames.forEach(s => {
-      const p = item.propostas[s];
-      if (!p || !p.incluso) { html += `<td>—</td>`; }
-      else {
-        const unit = p.unit_com_difal, total = p.total_com_difal;
-        const isBest = minPrice !== null && unit != null && Math.abs(unit - minPrice) < 0.01;
-        html += `<td><div class="price-pair"><span class="${isBest?'best-price':''}">${fmtBRL(total)}${isBest?' ✓':''}</span><span class="unit">${fmtBRLdec(unit)}/un</span></div></td>`;
-      }
-    });
-    html += `</tr>`;
-  });
-  html += `</tbody></table>`;
-  container.innerHTML = html;
+const CATEGORY_MATCHERS = [
+  { code: "4.1", test: d => d.includes("disjuntor") },
+  { code: "4.2", test: d => d.includes("dupla abertura lateral") && d.includes("sem lâmina") },
+  { code: "4.3", test: d => d.includes("dupla abertura lateral") && d.includes("com lâmina") },
+  { code: "4.4", test: d => d.includes("abertura vertical reversa") },
+  { code: "4.5", test: d => d.includes("transformador de corrente") },
+  { code: "4.6", test: d => d.includes("transformador de potencial") },
+  { code: "4.7", test: d => d.includes("para-raios") },
+];
+function matchCategory(descricao) {
+  const d = (descricao || "").toLowerCase();
+  const m = CATEGORY_MATCHERS.find(c => c.test(d));
+  return m ? m.code : null;
 }
-renderMcMatrix(document.getElementById("mc-matrix"));
 
-/* =========================== 5. CONTROLE WEG =========================== */
-const wegBody = document.querySelector("#weg-table tbody");
-document.getElementById("weg-sub").textContent = `${RAW.weg.docs.length} documentos previstos`;
-RAW.weg.docs.forEach(d => {
+const servicoBody = document.querySelector("#servico-table tbody");
+mcItems.filter(i => i.grupo === "Serviços").forEach(item => {
+  const included = Object.entries(item.propostas).filter(([name,p]) => name !== "MELHORES PREÇOS" && p.incluso);
   const tr = document.createElement("tr");
-  tr.innerHTML = `<td>${d["Identificador do Emissor"]||"—"}</td><td class="wrap">${d["Título"]||"—"}</td>
+  tr.innerHTML = `<td class="wrap">${item.descricao}</td>
+    <td class="num">${item.qtd ?? "—"}</td><td>${item.unidade||"—"}</td>
+    <td>${item.fornecedor_vencedor || "—"}</td>
+    <td class="ec-forn-list">${included.map(([n])=>`<span class="chip chip-neutral">${n}</span>`).join("") || "—"}</td>`;
+  servicoBody.appendChild(tr);
+});
+
+/* =========================== TAB 3: CONTROLE WEG =========================== */
+const wegDocs = RAW.weg.docs.map(d => ({ ...d, diasPrazo: daysUntil(d["Data Prevista para 1ª Emissão"]) }));
+const wegAtrasados = wegDocs.filter(d => d.diasPrazo != null && d.diasPrazo < 0);
+const statRowWeg = document.getElementById("stat-row-weg");
+[
+  { label: "Documentos previstos", value: wegDocs.length, sub: "aba Controle WEG" },
+  { label: "Em desenvolvimento", value: wegDocs.filter(d => String(d["STATUS"]||"").toUpperCase().includes("DESENVOLVIMENTO")).length, sub: "ainda não emitidos" },
+  { label: "Prazo vencido", value: wegAtrasados.length, sub: "data prevista já passou", alert: wegAtrasados.length>0 },
+].forEach(s => statRowWeg.appendChild(statTile(s)));
+document.getElementById("weg-sub").textContent = `${wegDocs.length} documentos previstos`;
+const wegBody = document.querySelector("#weg-table tbody");
+wegDocs.forEach(d => {
+  const tr = document.createElement("tr");
+  if (d.diasPrazo != null && d.diasPrazo < 0) tr.className = "late";
+  tr.innerHTML = `<td class="wrap">${d["Título"]||"—"}</td>
     <td>${d["Disciplina"]||"—"}</td><td>${fmtDate(d["Data Prevista para 1ª Emissão"])}</td>
-    <td><span class="chip chip-agv">${d["STATUS"]||"—"}</span></td><td class="wrap">${d["Comentários"]||"—"}</td>`;
+    <td><span class="chip chip-neutral">${d["STATUS"]||"—"}</span></td>
+    <td class="num">${d.diasPrazo ?? "—"}</td><td class="wrap">${d["Comentários"]||"—"}</td>`;
   wegBody.appendChild(tr);
 });
 
-/* =========================== 6. PROCUREMENT =========================== */
+/* =========================== TAB 3: PROCUREMENT =========================== */
 const procRows = RAW.procurement.rows.map(r => ({ ...r, dias: daysSince(r.data_abertura) }));
+const procEntregues = procRows.filter(r => String(r.status||"").toUpperCase().includes("ENTREGUE"));
+const statRowProc = document.getElementById("stat-row-procurement");
+[
+  { label: "Processos", value: procRows.length, sub: "aba Procurement" },
+  { label: "Entregues", value: procEntregues.length, sub: "concluídos" },
+  { label: "Em andamento", value: procRows.length - procEntregues.length, sub: "ainda em curso" },
+].forEach(s => statRowProc.appendChild(statTile(s)));
 const procBody = document.querySelector("#procurement-table tbody");
 function renderProcTable(key, dir) {
   procBody.innerHTML = "";
