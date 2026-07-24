@@ -692,7 +692,7 @@ function renderProcBarChart(containerId, groups, total) {
   });
 }
 
-function groupCount(rows, keyFn) {
+function groupCountProc(rows, keyFn) {
   const map = new Map();
   rows.forEach(r => {
     const k = keyFn(r);
@@ -703,14 +703,14 @@ function groupCount(rows, keyFn) {
 }
 
 function renderProcStatusChart(items) {
-  const groups = groupCount(items, r => procStatusChip(r.status).label).sort((a, b) => b.count - a.count);
+  const groups = groupCountProc(items, r => procStatusChip(r.status).label).sort((a, b) => b.count - a.count);
   renderProcBarChart("chart-proc-status", groups, items.length);
 }
 
 /* SC por mês — clicável, funciona como filtro (base respeita o filtro de obra) */
 function renderMesChart() {
   const baseItems = procObraFilter ? procRows.filter(r => r.obras === procObraFilter) : procRows;
-  const groups = groupCount(baseItems, r => r.mes).sort((a, b) => a.label.localeCompare(b.label));
+  const groups = groupCountProc(baseItems, r => r.mes).sort((a, b) => a.label.localeCompare(b.label));
   const total = baseItems.length;
   const el = document.getElementById("chart-proc-mes");
   el.innerHTML = "";
