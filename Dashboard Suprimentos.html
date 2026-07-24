@@ -678,7 +678,7 @@ function renderProcStats(items) {
   ].forEach(s => statRowProc.appendChild(statTile(s)));
 }
 
-function renderBarChart(containerId, groups, total) {
+function renderProcBarChart(containerId, groups, total) {
   const el = document.getElementById(containerId);
   el.innerHTML = "";
   groups.forEach((g, i) => {
@@ -704,7 +704,7 @@ function groupCount(rows, keyFn) {
 
 function renderProcStatusChart(items) {
   const groups = groupCount(items, r => procStatusChip(r.status).label).sort((a, b) => b.count - a.count);
-  renderBarChart("chart-proc-status", groups, items.length);
+  renderProcBarChart("chart-proc-status", groups, items.length);
 }
 
 /* SC por mês — clicável, funciona como filtro (base respeita o filtro de obra) */
