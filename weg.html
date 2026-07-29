@@ -92,6 +92,23 @@
   .step.done .line { background: var(--status-good); }
   .step.current .dot { background: var(--s1); border-color: var(--s1); color: #fff; box-shadow: 0 0 0 4px color-mix(in srgb, var(--s1) 20%, transparent); }
   .step.current .lbl { color: var(--text-primary); }
+
+  .gantt-scroll { overflow-x: auto; }
+  .gantt-header, .gantt-row { display: flex; align-items: center; min-width: 720px; }
+  .gantt-header { border-bottom: 1px solid var(--border); padding-bottom: 6px; margin-bottom: 4px; }
+  .gantt-label-spacer, .gantt-label { width: 250px; flex-shrink: 0; font-size: 11.5px; color: var(--text-secondary); padding-right: 10px; }
+  .gantt-label { color: var(--text-primary); }
+  .gantt-label .sub { display: block; font-size: 10.5px; color: var(--text-muted); }
+  .gantt-track-area, .gantt-ticks { position: relative; flex: 1; }
+  .gantt-tick { position: absolute; top: 0; font-size: 10px; color: var(--text-muted); transform: translateX(-50%); white-space: nowrap; }
+  .gantt-row { min-height: 30px; border-bottom: 1px solid var(--grid); }
+  .gantt-track { position: relative; flex: 1; height: 14px; }
+  .gantt-gridline { position: absolute; top: -6px; bottom: -6px; width: 1px; background: var(--grid); }
+  .gantt-bar { position: absolute; top: 0; bottom: 0; border-radius: 4px; min-width: 4px; cursor: default; }
+  .gantt-point { position: absolute; top: 50%; width: 11px; height: 11px; transform: translate(-50%, -50%) rotate(45deg); cursor: default; }
+  .gantt-today { position: absolute; top: -6px; bottom: -6px; width: 2px; background: var(--status-critical); opacity: .6; }
+  .gantt-legend { display: flex; gap: 18px; margin-top: 14px; font-size: 11.5px; color: var(--text-secondary); }
+  .gantt-dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 5px; vertical-align: middle; }
 </style>
 
 <div class="viz-root" data-palette="#2a78d6,#1baf7a,#eda100,#008300,#4a3aa7,#e34948,#e87ba4,#eb6834">
@@ -123,11 +140,25 @@
     <div id="weg-transformadores"></div>
   </div>
 
+  <div class="panel">
+    <h2>Marcos Contratuais — Cronograma</h2>
+    <div class="panel-sub">Datas de início/fim do cronograma de fabricação (contrato WEG). Passe o mouse numa barra para ver o período.</div>
+    <div class="gantt-scroll">
+      <div id="gantt-header" class="gantt-header"></div>
+      <div id="gantt-body"></div>
+    </div>
+    <div class="gantt-legend">
+      <span><i class="gantt-dot" style="background:var(--status-good)"></i> Concluído</span>
+      <span><i class="gantt-dot" style="background:var(--s1)"></i> Em andamento</span>
+      <span><i class="gantt-dot" style="background:var(--baseline)"></i> Não iniciado</span>
+    </div>
+  </div>
+
   <div class="foot">Dashboard gerado a partir de "1. Controle de Suprimentos.xlsx" (aba Controle WEG). Sem valores financeiros.</div>
 </div>
 
 <script>
-const RAW = {"weg": {"projetos": [{"descricao": "Lista de Documentos", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "Analise Engetecnica", "dias": 3}, {"descricao": "CADERNO DE BUCHAS", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "Analise Engetecnica", "dias": 3}, {"descricao": "CADERNO DE CONECTORES DE BUCHAS", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "Analise Engetecnica", "dias": 3}, {"descricao": "FOLHA DE DADOS", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "Analise Engetecnica", "dias": 3}, {"descricao": "DESCRITIVOS DE PINTURA", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "Analise Engetecnica", "dias": 3}, {"descricao": "DIAGRAMA DOS EQUIPAMENTOS AUXILIARES", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "Analise Engetecnica", "dias": 3}, {"descricao": "DIMENSÕES EXTERNAS", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "Analise Engetecnica", "dias": 3}, {"descricao": "DIMENSÕES DE TRANSPORTE", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "Analise Engetecnica", "dias": 3}, {"descricao": "PLACA DE IDENTIFICAÇÃO", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "Analise Engetecnica", "dias": 3}, {"descricao": "PLANO DE INSPEÇÃO E CONTROLE DE QUALIDADE", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "Analise Engetecnica", "dias": 3}, {"descricao": "MOTOVENTILADOR", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "Analise Engetecnica", "dias": 3}, {"descricao": "SENSOR DE TEMPERATURA DO ÓLEO (PT100)", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "Analise Engetecnica", "dias": 3}, {"descricao": "CATÁLOGOS DE COMPONENTES", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "Analise Engetecnica", "dias": 3}, {"descricao": "MANUAIS DE COMPONENTES", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "Analise Engetecnica", "dias": 3}, {"descricao": "MANUAL DE INSTRUÇÃO E OPERAÇÃO DO EQUIPAMENTO", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "Analise Engetecnica", "dias": 3}, {"descricao": "DESIGN REVIEW", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "Analise Engetecnica", "dias": 3}], "transformadores": {"TR1": [{"descricao": "Engenharia", "comentarios": null, "rev": "0A", "status": "DesenvolvimentoWEG", "dias": 3}, {"descricao": "Fabricação", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "TAC", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "Envio a obra", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "Entrega a obra", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "Montagem", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "Comissionamento", "comentarios": null, "rev": null, "status": null, "dias": null}], "TR2": [{"descricao": "Engenharia", "comentarios": null, "rev": "0A", "status": "DesenvolvimentoWEG", "dias": 5}, {"descricao": "Fabricação", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "TAC", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "Envio a obra", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "Entrega a obra", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "Montagem", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "Comissionamento", "comentarios": null, "rev": null, "status": null, "dias": null}], "TR3": [{"descricao": "Engenharia", "comentarios": null, "rev": "0A", "status": "DesenvolvimentoWEG", "dias": 5}, {"descricao": "Fabricação", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "TAC", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "Envio a obra", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "Entrega a obra", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "Montagem", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "Comissionamento", "comentarios": null, "rev": null, "status": null, "dias": null}], "TR4": [{"descricao": "Engenharia", "comentarios": null, "rev": "0A", "status": "DesenvolvimentoWEG", "dias": 5}, {"descricao": "Fabricação", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "TAC", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "Envio a obra", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "Entrega a obra", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "Montagem", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "Comissionamento", "comentarios": null, "rev": null, "status": null, "dias": null}]}}};
+const RAW = {"weg": {"projetos": [{"descricao": "Lista de Documentos", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "Analise Engetecnica", "dias": 5}, {"descricao": "CADERNO DE BUCHAS", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "Analise Engetecnica", "dias": 5}, {"descricao": "CADERNO DE CONECTORES DE BUCHAS", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "Analise Engetecnica", "dias": 5}, {"descricao": "FOLHA DE DADOS", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "Analise Engetecnica", "dias": 5}, {"descricao": "DESCRITIVOS DE PINTURA", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "Analise Engetecnica", "dias": 5}, {"descricao": "DIAGRAMA DOS EQUIPAMENTOS AUXILIARES", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "Analise Engetecnica", "dias": 5}, {"descricao": "DIMENSÕES EXTERNAS", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "Analise Engetecnica", "dias": 5}, {"descricao": "DIMENSÕES DE TRANSPORTE", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "Analise Engetecnica", "dias": 5}, {"descricao": "PLACA DE IDENTIFICAÇÃO", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "Analise Engetecnica", "dias": 5}, {"descricao": "PLANO DE INSPEÇÃO E CONTROLE DE QUALIDADE", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "Analise Engetecnica", "dias": 5}, {"descricao": "MOTOVENTILADOR", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "Analise Engetecnica", "dias": 5}, {"descricao": "SENSOR DE TEMPERATURA DO ÓLEO (PT100)", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "Analise Engetecnica", "dias": 5}, {"descricao": "CATÁLOGOS DE COMPONENTES", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "Analise Engetecnica", "dias": 5}, {"descricao": "MANUAIS DE COMPONENTES", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "Analise Engetecnica", "dias": 5}, {"descricao": "MANUAL DE INSTRUÇÃO E OPERAÇÃO DO EQUIPAMENTO", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "Analise Engetecnica", "dias": 5}, {"descricao": "DESIGN REVIEW", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "Analise Engetecnica", "dias": 5}], "transformadores": {"TR1": [{"descricao": "Engenharia", "comentarios": null, "rev": "0A", "status": "DesenvolvimentoWEG", "dias": 5}, {"descricao": "Fabricação", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "TAC", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "Envio a obra", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "Entrega a obra", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "Montagem", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "Comissionamento", "comentarios": null, "rev": null, "status": null, "dias": null}], "TR2": [{"descricao": "Engenharia", "comentarios": null, "rev": "0A", "status": "DesenvolvimentoWEG", "dias": 7}, {"descricao": "Fabricação", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "TAC", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "Envio a obra", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "Entrega a obra", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "Montagem", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "Comissionamento", "comentarios": null, "rev": null, "status": null, "dias": null}], "TR3": [{"descricao": "Engenharia", "comentarios": null, "rev": "0A", "status": "DesenvolvimentoWEG", "dias": 7}, {"descricao": "Fabricação", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "TAC", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "Envio a obra", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "Entrega a obra", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "Montagem", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "Comissionamento", "comentarios": null, "rev": null, "status": null, "dias": null}], "TR4": [{"descricao": "Engenharia", "comentarios": null, "rev": "0A", "status": "DesenvolvimentoWEG", "dias": 7}, {"descricao": "Fabricação", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "TAC", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "Envio a obra", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "Entrega a obra", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "Montagem", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "Comissionamento", "comentarios": null, "rev": null, "status": null, "dias": null}]}}, "marcos": [{"marco": "Assinatura do Contrato", "transformador": "Compartilhado", "data_inicio": "2026-05-11T03:00:00", "data_fim": "2026-05-11T03:00:00", "status": "Concluído"}, {"marco": "Aprovação dos Desenhos", "transformador": "Compartilhado", "data_inicio": "2026-07-22T03:00:00", "data_fim": "2026-08-11T03:00:00", "status": "Em andamento"}, {"marco": "Bobinas", "transformador": "Transformador 1", "data_inicio": "2027-04-21T03:00:00", "data_fim": "2027-06-11T03:00:00", "status": "Não iniciado"}, {"marco": "Núcleo", "transformador": "Transformador 1", "data_inicio": "2027-05-06T03:00:00", "data_fim": "2027-06-11T03:00:00", "status": "Não iniciado"}, {"marco": "Ensaios, Inspeção e Relatórios", "transformador": "Transformador 1", "data_inicio": "2027-08-24T03:00:00", "data_fim": "2027-09-28T03:00:00", "status": "Não iniciado"}, {"marco": "Transporte até Pilar/AL", "transformador": "Transformador 1", "data_inicio": "2027-11-18T03:00:00", "data_fim": "2027-12-08T03:00:00", "status": "Não iniciado"}, {"marco": "Bobinas", "transformador": "Transformador 2", "data_inicio": "2027-04-26T03:00:00", "data_fim": "2027-06-16T03:00:00", "status": "Não iniciado"}, {"marco": "Núcleo", "transformador": "Transformador 2", "data_inicio": "2027-05-11T03:00:00", "data_fim": "2027-06-16T03:00:00", "status": "Não iniciado"}, {"marco": "Ensaios, Inspeção e Relatórios", "transformador": "Transformador 2", "data_inicio": "2027-08-27T03:00:00", "data_fim": "2027-09-30T03:00:00", "status": "Não iniciado"}, {"marco": "Transporte até Pilar/AL", "transformador": "Transformador 2", "data_inicio": "2027-11-19T03:00:00", "data_fim": "2027-12-09T03:00:00", "status": "Não iniciado"}, {"marco": "Bobinas", "transformador": "Transformador 3", "data_inicio": "2027-04-26T03:00:00", "data_fim": "2027-06-16T03:00:00", "status": "Não iniciado"}, {"marco": "Núcleo", "transformador": "Transformador 3", "data_inicio": "2027-05-11T03:00:00", "data_fim": "2027-06-16T03:00:00", "status": "Não iniciado"}, {"marco": "Ensaios, Inspeção e Relatórios", "transformador": "Transformador 3", "data_inicio": "2027-08-30T03:00:00", "data_fim": "2027-09-30T03:00:00", "status": "Não iniciado"}, {"marco": "Transporte até Pilar/AL", "transformador": "Transformador 3", "data_inicio": "2027-11-23T03:00:00", "data_fim": "2027-12-13T03:00:00", "status": "Não iniciado"}, {"marco": "Bobinas", "transformador": "Transformador 4", "data_inicio": "2027-04-27T03:00:00", "data_fim": "2027-06-17T03:00:00", "status": "Não iniciado"}, {"marco": "Núcleo", "transformador": "Transformador 4", "data_inicio": "2027-05-12T03:00:00", "data_fim": "2027-06-17T03:00:00", "status": "Não iniciado"}, {"marco": "Ensaios, Inspeção e Relatórios", "transformador": "Transformador 4", "data_inicio": "2027-08-30T03:00:00", "data_fim": "2027-10-01T03:00:00", "status": "Não iniciado"}, {"marco": "Transporte até Pilar/AL", "transformador": "Transformador 4", "data_inicio": "2027-11-24T03:00:00", "data_fim": "2027-12-14T03:00:00", "status": "Não iniciado"}, {"marco": "Entrega do 1º equipamento na obra", "transformador": "Geral", "data_inicio": null, "data_fim": "2027-12-14T03:00:00", "status": "Não iniciado"}, {"marco": "Data Contratual de Aceitação Provisória", "transformador": "Geral", "data_inicio": null, "data_fim": "2028-02-20T03:00:00", "status": "Não iniciado"}]};
 const NOW = new Date();
 document.getElementById("updated-date").textContent = NOW.toLocaleDateString("pt-BR");
 
@@ -211,4 +242,85 @@ TR_CODES.forEach((code, idx) => {
   `;
   wegTransfWrap.appendChild(card);
 });
+
+/* =========================== MARCOS CONTRATUAIS — CRONOGRAMA =========================== */
+const marcos = RAW.marcos || [];
+if (marcos.length) {
+  const MESES_PT = ["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
+  function marcoStatusColor(status) {
+    const s = String(status || "").toUpperCase();
+    if (s.includes("CONCLU")) return "var(--status-good)";
+    if (s.includes("ANDAMENTO")) return "var(--s1)";
+    return "var(--baseline)";
+  }
+  const dates = [];
+  marcos.forEach(m => { if (m.data_inicio) dates.push(new Date(m.data_inicio)); if (m.data_fim) dates.push(new Date(m.data_fim)); });
+  const tMin = new Date(Math.min(...dates));
+  const tMax = new Date(Math.max(...dates));
+  // margem de ~5% em cada ponta para nao colar bordas
+  const span = tMax - tMin;
+  const rangeStart = new Date(tMin.getTime() - span * 0.03);
+  const rangeEnd = new Date(tMax.getTime() + span * 0.03);
+  const rangeSpan = rangeEnd - rangeStart;
+  function pct(d) { return ((d - rangeStart) / rangeSpan) * 100; }
+
+  const ganttHeader = document.getElementById("gantt-header");
+  const ticksWrap = document.createElement("div");
+  ticksWrap.className = "gantt-ticks";
+  let cursor = new Date(tMin.getFullYear(), tMin.getMonth(), 1);
+  while (cursor <= rangeEnd) {
+    if (cursor >= rangeStart) {
+      const tick = document.createElement("div");
+      tick.className = "gantt-tick";
+      tick.style.left = pct(cursor) + "%";
+      tick.textContent = `${MESES_PT[cursor.getMonth()]}/${String(cursor.getFullYear()).slice(2)}`;
+      ticksWrap.appendChild(tick);
+    }
+    cursor = new Date(cursor.getFullYear(), cursor.getMonth() + 2, 1);
+  }
+  ganttHeader.innerHTML = '<div class="gantt-label-spacer"></div>';
+  ganttHeader.appendChild(ticksWrap);
+
+  const ganttBody = document.getElementById("gantt-body");
+  marcos.forEach(m => {
+    const row = document.createElement("div");
+    row.className = "gantt-row";
+    const color = marcoStatusColor(m.status);
+    const label = document.createElement("div");
+    label.className = "gantt-label";
+    label.innerHTML = `${m.marco}<span class="sub">${m.transformador}</span>`;
+    const trackArea = document.createElement("div");
+    trackArea.className = "gantt-track-area";
+    const track = document.createElement("div");
+    track.className = "gantt-track";
+    if (NOW >= rangeStart && NOW <= rangeEnd) {
+      const todayLine = document.createElement("div");
+      todayLine.className = "gantt-today";
+      todayLine.style.left = pct(NOW) + "%";
+      track.appendChild(todayLine);
+    }
+    if (m.data_inicio && m.data_fim) {
+      const d1 = new Date(m.data_inicio), d2 = new Date(m.data_fim);
+      const bar = document.createElement("div");
+      bar.className = "gantt-bar";
+      bar.style.left = pct(d1) + "%";
+      bar.style.width = Math.max(pct(d2) - pct(d1), 0.6) + "%";
+      bar.style.background = color;
+      bar.title = `${m.marco} (${m.transformador})\n${fmtDate(m.data_inicio)} – ${fmtDate(m.data_fim)}\n${m.status}`;
+      track.appendChild(bar);
+    } else if (m.data_fim) {
+      const point = document.createElement("div");
+      point.className = "gantt-point";
+      point.style.left = pct(new Date(m.data_fim)) + "%";
+      point.style.background = color;
+      point.title = `${m.marco}\n${fmtDate(m.data_fim)}\n${m.status}`;
+      track.appendChild(point);
+    }
+    trackArea.appendChild(track);
+    row.appendChild(label);
+    row.appendChild(trackArea);
+    ganttBody.appendChild(row);
+  });
+}
+function fmtDate(iso) { return new Date(iso).toLocaleDateString("pt-BR"); }
 </script>
