@@ -1,0 +1,92 @@
+<title>Engetecnica · Dashboards — SE UTE Pilar / SE Rio Largo II</title>
+<style>
+  :root{
+    --orange:#e2571c;--orange-2:#f2833e;--headbg:#16181d;--headink:#f4f5f7;--headmut:#a2a8b4;
+  }
+  .viz-root {
+    --page: #eceff4; --surface-1: #fff; --text-primary: #1a2230; --text-secondary: #3f4757; --text-muted: #5d6775; --border: #dde3ec;
+    --shadow: 0 1px 2px rgba(20,30,50,.05), 0 6px 20px rgba(20,30,50,.07);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      --page: #0e1116; --surface-1: #171b22; --text-primary: #e7ecf3; --text-secondary: #b7c0cc; --text-muted: #93a0b2; --border: #2a313d;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.4);
+    }
+  }
+  :root[data-theme="dark"] .viz-root {
+    --page: #0e1116; --surface-1: #171b22; --text-primary: #e7ecf3; --text-secondary: #b7c0cc; --text-muted: #93a0b2; --border: #2a313d;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.4);
+  }
+
+  .viz-root { font-family: "Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif; background: var(--page); color: var(--text-primary);
+    min-height: 100vh; margin: 0; }
+  .viz-root * { box-sizing: border-box; }
+
+  .topbar { background: var(--headbg); color: var(--headink); }
+  .topbar-in { max-width: 640px; margin: 0 auto; padding: 13px 22px; display: flex; align-items: center; gap: 11px; }
+  .et { width: 34px; height: 34px; border-radius: 7px; background: linear-gradient(135deg, var(--orange), var(--orange-2)); display: grid; place-items: center; font-weight: 800; font-size: 15px; color: #fff; box-shadow: 0 2px 8px rgba(226,87,28,.4); }
+  .nm { font-weight: 800; font-size: 15px; } .nm span { color: var(--orange); font-weight: 600; }
+  .accent { height: 3px; background: linear-gradient(90deg, var(--orange), var(--orange-2) 60%, transparent); }
+
+  .wrap { max-width: 640px; margin: 0 auto; padding: 44px 22px 60px; }
+  .eyebrow { font-family: "SFMono-Regular", Consolas, Menlo, monospace; font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--orange); font-weight: 700; text-align: center; }
+  h1 { font-size: 26px; font-weight: 800; letter-spacing: -.01em; margin: 8px 0 4px; text-align: center; }
+  .sub { color: var(--text-muted); font-size: 13px; text-align: center; margin-bottom: 36px; }
+
+  .links { display: flex; flex-direction: column; gap: 14px; }
+  .link-card { display: flex; align-items: center; gap: 16px; background: var(--surface-1); border: 1px solid var(--border); border-radius: 14px;
+    padding: 18px 20px; box-shadow: var(--shadow); text-decoration: none; color: inherit; transition: transform .12s, box-shadow .12s; }
+  .link-card:hover { transform: translateY(-2px); box-shadow: 0 2px 4px rgba(20,30,50,.08), 0 10px 28px rgba(20,30,50,.12); }
+  .link-icon { width: 46px; height: 46px; border-radius: 11px; display: grid; place-items: center; font-size: 21px; flex-shrink: 0; color: #fff; }
+  .link-body { flex: 1; min-width: 0; }
+  .link-title { font-size: 15.5px; font-weight: 800; }
+  .link-desc { font-size: 12.5px; color: var(--text-muted); margin-top: 2px; }
+  .link-arrow { color: var(--text-muted); font-size: 18px; flex-shrink: 0; }
+
+  footer { text-align: center; color: var(--text-muted); font-size: 11.5px; margin-top: 40px; }
+  footer b { color: var(--orange); }
+</style>
+
+<div class="viz-root">
+  <div class="topbar"><div class="topbar-in">
+    <div class="et">ET</div><div class="nm">ENGETECNICA <span>Engenharia e Construção</span></div>
+  </div></div>
+  <div class="accent"></div>
+
+  <div class="wrap">
+    <div class="eyebrow">SE UTE PILAR · LT · SE RIO LARGO II · 230 kV</div>
+    <h1>Dashboards do Projeto</h1>
+    <div class="sub">Acesso rápido aos painéis de acompanhamento — sem valores financeiros</div>
+
+    <div class="links">
+      <a class="link-card" href="index.html">
+        <div class="link-icon" style="background:linear-gradient(135deg,#e2571c,#f2833e);">📦</div>
+        <div class="link-body">
+          <div class="link-title">Controle de Suprimentos</div>
+          <div class="link-desc">Revisões de equipamentos por fornecedor e obra, e acompanhamento de Procurement</div>
+        </div>
+        <div class="link-arrow">→</div>
+      </a>
+
+      <a class="link-card" href="weg.html">
+        <div class="link-icon" style="background:linear-gradient(135deg,#2f6df0,#5a8bf5);">🔩</div>
+        <div class="link-body">
+          <div class="link-title">Controle WEG — Transformadores</div>
+          <div class="link-desc">Pipeline de fabricação, documentos de engenharia e cronograma contratual dos 4 transformadores</div>
+        </div>
+        <div class="link-arrow">→</div>
+      </a>
+
+      <a class="link-card" href="https://coruscating-sopapillas-79bc5e.netlify.app/">
+        <div class="link-icon" style="background:linear-gradient(135deg,#2a9d57,#3fbd76);">📄</div>
+        <div class="link-body">
+          <div class="link-title">Acompanhamento Geral de Projetos</div>
+          <div class="link-desc">Emissão de documentos por obra e disciplina — SE UTE Pilar, SE Rio Largo II e Linha de Transmissão</div>
+        </div>
+        <div class="link-arrow">→</div>
+      </a>
+    </div>
+
+    <footer>Atualizado junto com o Excel de controle · <b>Engetécnica</b></footer>
+  </div>
+</div>
