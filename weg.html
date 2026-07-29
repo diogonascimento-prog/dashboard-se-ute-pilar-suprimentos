@@ -147,7 +147,7 @@
 
    <div class="card" style="box-shadow:none;border:none;padding:0;background:none;">
      <div class="panelhead"><div class="t">Pipeline de fabricação — 4 transformadores</div></div>
-     <p class="cap" style="margin:-8px 0 14px;">Engenharia &rarr; Fabricação &rarr; TAC &rarr; Envio à obra &rarr; Entrega em obra &rarr; Montagem &rarr; Comissionamento</p>
+     <p class="cap" style="margin:-8px 0 14px;">Engenharia &rarr; Fabricação &rarr; TAF &rarr; Envio à obra &rarr; Entrega em obra &rarr; Montagem &rarr; Comissionamento</p>
      <div id="weg-transformadores"></div>
    </div>
  </div>
@@ -220,7 +220,7 @@ function renderBarChart(containerId, groups) {
   });
 }
 
-const STAGES = ["Engenharia","Fabricação","TAC","Envio a obra","Entrega a obra","Montagem","Comissionamento"];
+const STAGES = ["Engenharia","Fabricação","TAF","Envio a obra","Entrega a obra","Montagem","Comissionamento"];
 function wegStatusChip(status) {
   if (!status) return { label: "Não iniciado", cls: "sem" };
   const s = String(status).toUpperCase();
