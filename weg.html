@@ -1,188 +1,240 @@
-<title>Controle WEG — SE UTE Pilar / SE Rio Largo II</title>
+<title>Engetecnica · Controle WEG — Transformadores PILAR 230 kV</title>
 <style>
-  .viz-root {
-    color-scheme: light;
-    --surface-1: #fcfcfb; --page: #f9f9f7; --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #898781;
-    --grid: #e1e0d9; --baseline: #c3c2b7; --border: rgba(11,11,11,0.10);
-    --s1:#2a78d6; --s2:#1baf7a; --s3:#eda100; --s4:#008300; --s5:#4a3aa7; --s6:#e34948; --s7:#e87ba4; --s8:#eb6834; --s9:#7a7a7a; --s10:#9c6b30;
-    --status-good: #0ca30c; --status-warning: #fab219; --status-serious: #ec835a; --status-critical: #d03b3b;
-    --chip-eng-bg: color-mix(in srgb, #2a78d6 16%, transparent); --chip-eng-fg: #1c5cab;
-    --chip-forn-bg: color-mix(in srgb, #fab219 24%, transparent); --chip-forn-fg: #8a5c00;
-    --chip-done-bg: color-mix(in srgb, #0ca30c 16%, transparent); --chip-done-fg: #006300;
-    --chip-late-bg: color-mix(in srgb, #d03b3b 16%, transparent); --chip-late-fg: #a12b2b;
-    --chip-neutral-bg: #ececea; --chip-neutral-fg: #52514e;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root:where(:not([data-theme="light"])) .viz-root {
-      color-scheme: dark;
-      --surface-1: #1a1a19; --page: #0d0d0d; --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
-      --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
-      --s1:#3987e5; --s2:#199e70; --s3:#c98500; --s4:#008300; --s5:#9085e9; --s6:#e66767; --s7:#d55181; --s8:#d95926; --s9:#9a9a9a; --s10:#c99a5f;
-      --chip-eng-bg: color-mix(in srgb, #3987e5 26%, transparent); --chip-eng-fg: #bcd6f7;
-      --chip-forn-bg: color-mix(in srgb, #fab219 30%, transparent); --chip-forn-fg: #ffd684;
-      --chip-done-bg: color-mix(in srgb, #0ca30c 26%, transparent); --chip-done-fg: #8fe08f;
-      --chip-late-bg: color-mix(in srgb, #d03b3b 30%, transparent); --chip-late-fg: #ffb3b3;
-      --chip-neutral-bg: #2c2c2a; --chip-neutral-fg: #c3c2b7;
-    }
-  }
-  :root[data-theme="dark"] .viz-root {
-    color-scheme: dark;
-    --surface-1: #1a1a19; --page: #0d0d0d; --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #898781;
-    --grid: #2c2c2a; --baseline: #383835; --border: rgba(255,255,255,0.10);
-    --s1:#3987e5; --s2:#199e70; --s3:#c98500; --s4:#008300; --s5:#9085e9; --s6:#e66767; --s7:#d55181; --s8:#d95926; --s9:#9a9a9a; --s10:#c99a5f;
-    --chip-eng-bg: color-mix(in srgb, #3987e5 26%, transparent); --chip-eng-fg: #bcd6f7;
-    --chip-forn-bg: color-mix(in srgb, #fab219 30%, transparent); --chip-forn-fg: #ffd684;
-    --chip-done-bg: color-mix(in srgb, #0ca30c 26%, transparent); --chip-done-fg: #8fe08f;
-    --chip-late-bg: color-mix(in srgb, #d03b3b 30%, transparent); --chip-late-fg: #ffb3b3;
-    --chip-neutral-bg: #2c2c2a; --chip-neutral-fg: #c3c2b7;
-  }
+ :root{
+  --orange:#e2571c;--orange-2:#f2833e;--orange-ink:#c8480f;--headbg:#16181d;--headink:#f4f5f7;--headmut:#a2a8b4;
+  --bg:#eceff4;--surface:#fff;--surface-2:#f6f8fb;--ink:#1a2230;--muted:#5d6775;--border:#dde3ec;
+  --blue:#2f6df0;--green:#2a9d57;--red:#cf3a4e;--amber:#d99400;--purple:#7a5af0;--teal:#0f9b9b;--slate:#64748b;
+  --grid:#e9edf3;--shadow:0 1px 2px rgba(20,30,50,.05),0 6px 20px rgba(20,30,50,.07);
+  --sans:"Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;--mono:"SFMono-Regular",Consolas,Menlo,monospace;
+ }
+ @media (prefers-color-scheme:dark){:root{--bg:#0e1116;--surface:#171b22;--surface-2:#1d222b;--ink:#e7ecf3;--muted:#93a0b2;--border:#2a313d;--grid:#232a34;--shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.4)}}
+ :root[data-theme="dark"]{--bg:#0e1116;--surface:#171b22;--surface-2:#1d222b;--ink:#e7ecf3;--muted:#93a0b2;--border:#2a313d;--grid:#232a34;--shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.4)}
+ :root[data-theme="light"]{--bg:#eceff4;--surface:#fff;--surface-2:#f6f8fb;--ink:#1a2230;--muted:#5d6775;--border:#dde3ec;--grid:#e9edf3;--shadow:0 1px 2px rgba(20,30,50,.05),0 6px 20px rgba(20,30,50,.07)}
 
-  .viz-root { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; background: var(--page); color: var(--text-primary);
-    padding: 24px clamp(12px, 3vw, 36px) 60px; max-width: 1100px; margin: 0 auto; }
-  .viz-root * { box-sizing: border-box; }
-  .viz-root h1, .viz-root h2, .viz-root h3 { margin: 0; font-weight: 700; }
-  .viz-root table { border-collapse: collapse; width: 100%; }
+ .viz-root *{box-sizing:border-box}
+ .viz-root{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.5;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums;margin:0 auto;}
+ .viz-root table{border-collapse:collapse;width:100%}
+ .wrap{max-width:1180px;margin:0 auto;padding:0 22px}
+ .topbar{background:var(--headbg);color:var(--headink);border-radius:14px 14px 0 0;margin-top:0}
+ .topbar-in{max-width:1180px;margin:0 auto;padding:13px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+ .brand{display:flex;align-items:center;gap:11px}
+ .et{width:34px;height:34px;border-radius:7px;background:linear-gradient(135deg,var(--orange),var(--orange-2));display:grid;place-items:center;font-weight:800;font-size:15px;color:#fff;box-shadow:0 2px 8px rgba(226,87,28,.4)}
+ .brand .nm{font-weight:800;font-size:15px} .brand .nm span{color:var(--orange);font-weight:600}
+ .topbar .rgt{text-align:right;font-size:11px;color:var(--headmut);line-height:1.35} .topbar .rgt b{color:var(--headink)}
+ .accent{height:3px;background:linear-gradient(90deg,var(--orange),var(--orange-2) 60%,transparent)}
+ .sub{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:18px 0 12px}
+ .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--orange);font-weight:700}
+ .viz-root h1{margin:5px 0 3px;font-size:25px;font-weight:800;letter-spacing:-.01em;text-wrap:balance}
+ .sub .dsc{color:var(--muted);font-size:12.5px;text-transform:uppercase;letter-spacing:.05em}
 
-  .header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 12px;
-    margin-bottom: 18px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
-  .header h1 { font-size: 22px; letter-spacing: -0.01em; }
-  .header .sub { color: var(--text-secondary); font-size: 13px; margin-top: 4px; }
-  .header .meta { text-align: right; color: var(--text-muted); font-size: 12px; }
+ .tabs{display:flex;gap:2px;border-bottom:2px solid var(--border);margin-bottom:18px;overflow-x:auto}
+ .tab{appearance:none;background:none;border:none;cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--muted);padding:11px 15px;border-bottom:3px solid transparent;margin-bottom:-2px;white-space:nowrap}
+ .tab:hover{color:var(--ink)} .tab.on{color:var(--orange);border-bottom-color:var(--orange)}
+ .panel{display:none} .panel.on{display:block;animation:fade .18s ease}
+ @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 
-  .stat-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin-bottom: 20px; }
-  .stat-tile { background: var(--surface-1); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
-  .stat-tile.alert { border-color: color-mix(in srgb, var(--status-critical) 45%, var(--border)); }
-  .stat-tile .label { font-size: 12px; color: var(--text-secondary); margin-bottom: 6px; }
-  .stat-tile .value { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; }
-  .stat-tile.alert .value { color: var(--status-critical); }
-  .stat-tile .sub { font-size: 11.5px; color: var(--text-muted); margin-top: 4px; }
+ .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
+ @media (max-width:820px){.kpis{grid-template-columns:repeat(2,1fr)}}
+ .kpi{background:var(--surface);border:1px solid var(--border);border-top:3px solid var(--k,var(--orange));border-radius:11px;padding:14px 16px 13px;box-shadow:var(--shadow)}
+ .kpi .l{font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:700}
+ .kpi .v{font-size:30px;font-weight:800;letter-spacing:-.02em;line-height:1.05;margin-top:5px}
+ .kpi .v.alert{color:var(--red)}
+ .kpi .s{font-size:11px;color:var(--muted);margin-top:3px}
 
-  .panel { background: var(--surface-1); border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px; margin-bottom: 20px; }
-  .panel h2 { font-size: 15px; margin-bottom: 2px; }
-  .panel .panel-sub { font-size: 12px; color: var(--text-secondary); margin-bottom: 14px; }
+ .panelhead{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+ .panelhead .t{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
 
-  table.data th, table.data td { text-align: left; padding: 8px 10px; font-size: 12.5px; border-bottom: 1px solid var(--grid); white-space: nowrap; }
-  table.data td.wrap { white-space: normal; max-width: 300px; }
-  table.data th { color: var(--text-secondary); font-weight: 600; font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.02em; }
-  table.data tbody tr:hover { background: var(--grid); }
-  .table-scroll { overflow-x: auto; max-height: 480px; overflow-y: auto; border: 1px solid var(--border); border-radius: 8px; }
-  .num { text-align: right; font-variant-numeric: tabular-nums; }
+ .card{background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:18px 20px;box-shadow:var(--shadow);margin-bottom:16px}
+ .card h3{margin:0 0 3px;font-size:15px;font-weight:800}
+ .card .cap{margin:0 0 14px;color:var(--muted);font-size:12.5px}
 
-  .chip { display: inline-flex; align-items: center; gap: 5px; padding: 3px 9px; border-radius: 999px; font-size: 11px; font-weight: 600; white-space: nowrap; }
-  .chip-eng { background: var(--chip-eng-bg); color: var(--chip-eng-fg); }
-  .chip-forn { background: var(--chip-forn-bg); color: var(--chip-forn-fg); }
-  .chip-done { background: var(--chip-done-bg); color: var(--chip-done-fg); }
-  .chip-late { background: var(--chip-late-bg); color: var(--chip-late-fg); }
-  .chip-neutral { background: var(--chip-neutral-bg); color: var(--chip-neutral-fg); }
+ table.tbl{width:100%;border-collapse:collapse;font-size:12.5px}
+ table.tbl th,table.tbl td{text-align:left;padding:8px 11px;border-bottom:1px solid var(--border);white-space:nowrap}
+ table.tbl td.d,table.tbl td.wrap{white-space:normal;min-width:220px;max-width:320px}
+ table.tbl thead th{font-size:10.5px;text-transform:uppercase;letter-spacing:.03em;color:var(--muted);border-bottom:2px solid var(--border)}
+ table.tbl tbody tr:hover{background:var(--surface-2)}
+ .num{text-align:right;font-variant-numeric:tabular-nums}
+ .table-scroll{overflow-x:auto;max-height:520px;overflow-y:auto;border:1px solid var(--border);border-radius:10px}
+ .table-scroll table.tbl thead th{position:sticky;top:0;background:var(--surface)}
 
-  .note { font-size: 12px; color: var(--text-muted); margin-top: 10px; line-height: 1.5; }
-  .foot { text-align: center; color: var(--text-muted); font-size: 11.5px; margin-top: 30px; }
+ .sp{display:inline-block;padding:2px 10px;border-radius:999px;font-size:11.5px;font-weight:700;white-space:nowrap}
+ .sp.done{background:rgba(42,157,87,.15);color:var(--green)}
+ .sp.andamento{background:rgba(47,109,240,.14);color:var(--blue)}
+ .sp.forn{background:rgba(217,148,0,.16);color:var(--amber)}
+ .sp.atr{background:rgba(207,58,78,.15);color:var(--red)}
+ .sp.sem{background:var(--surface-2);color:var(--muted);border:1px solid var(--border)}
 
-  .tr-card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px 14px; margin-bottom: 14px; }
-  .tr-card-head { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
-  .tr-card-head h3 { font-size: 14px; }
-  .stepper { display: flex; align-items: flex-start; gap: 0; overflow-x: auto; padding: 4px 0 2px; }
-  .step { flex: 1; min-width: 96px; display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; }
-  .step .line { position: absolute; top: 13px; left: -50%; width: 100%; height: 2px; background: var(--baseline); z-index: 0; }
-  .step:first-child .line { display: none; }
-  .step .dot { width: 27px; height: 27px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-    font-size: 11px; font-weight: 700; border: 2px solid var(--baseline); background: var(--surface-1); color: var(--text-muted); z-index: 1; }
-  .step .lbl { font-size: 10.5px; margin-top: 7px; color: var(--text-muted); font-weight: 600; line-height: 1.25; white-space: pre-line; padding: 0 2px; }
-  .step.done .dot { background: var(--status-good); border-color: var(--status-good); color: #fff; }
-  .step.done .line { background: var(--status-good); }
-  .step.current .dot { background: var(--s1); border-color: var(--s1); color: #fff; box-shadow: 0 0 0 4px color-mix(in srgb, var(--s1) 20%, transparent); }
-  .step.current .lbl { color: var(--text-primary); }
+ .bar-row{display:grid;grid-template-columns:180px 1fr 42px;align-items:center;gap:12px;margin-bottom:11px}
+ .bar-row .bname{font-size:12.5px;color:var(--ink);font-weight:600}
+ .bar-track{position:relative;height:16px;background:var(--grid);border-radius:4px;overflow:hidden}
+ .bar-fill{position:absolute;left:0;top:0;bottom:0;border-radius:4px}
+ .bar-val{font-size:12px;color:var(--muted);text-align:right;font-variant-numeric:tabular-nums;font-weight:700}
 
-  .gantt-scroll { overflow-x: auto; }
-  .gantt-header, .gantt-row { display: flex; align-items: center; min-width: 720px; }
-  .gantt-header { border-bottom: 1px solid var(--border); padding-bottom: 6px; margin-bottom: 4px; }
-  .gantt-label-spacer, .gantt-label { width: 250px; flex-shrink: 0; font-size: 11.5px; color: var(--text-secondary); padding-right: 10px; }
-  .gantt-label { color: var(--text-primary); }
-  .gantt-label .sub { display: block; font-size: 10.5px; color: var(--text-muted); }
-  .gantt-track-area, .gantt-ticks { position: relative; flex: 1; }
-  .gantt-tick { position: absolute; top: 0; font-size: 10px; color: var(--text-muted); transform: translateX(-50%); white-space: nowrap; }
-  .gantt-row { min-height: 30px; border-bottom: 1px solid var(--grid); }
-  .gantt-track { position: relative; flex: 1; height: 14px; }
-  .gantt-gridline { position: absolute; top: -6px; bottom: -6px; width: 1px; background: var(--grid); }
-  .gantt-bar { position: absolute; top: 0; bottom: 0; border-radius: 4px; min-width: 4px; cursor: default; }
-  .gantt-point { position: absolute; top: 50%; width: 11px; height: 11px; transform: translate(-50%, -50%) rotate(45deg); cursor: default; }
-  .gantt-today { position: absolute; top: -6px; bottom: -6px; width: 2px; background: var(--status-critical); opacity: .6; }
-  .gantt-legend { display: flex; gap: 18px; margin-top: 14px; font-size: 11.5px; color: var(--text-secondary); }
-  .gantt-dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 5px; vertical-align: middle; }
+ /* pipeline stepper */
+ .tr-card{background:var(--surface);border:1px solid var(--border);border-top:4px solid var(--dc,var(--orange));border-radius:13px;padding:18px 20px 16px;margin-bottom:14px;box-shadow:var(--shadow)}
+ .tr-card-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+ .tr-card-head h3{font-size:14.5px;font-weight:800;margin:0}
+ .stepper{display:flex;align-items:flex-start;gap:0;overflow-x:auto;padding:4px 0 2px}
+ .step{flex:1;min-width:96px;display:flex;flex-direction:column;align-items:center;text-align:center;position:relative}
+ .step .line{position:absolute;top:13px;left:-50%;width:100%;height:2px;background:var(--border);z-index:0}
+ .step:first-child .line{display:none}
+ .step .dot{width:27px;height:27px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;border:2px solid var(--border);background:var(--surface);color:var(--muted);z-index:1}
+ .step .lbl{font-size:10.5px;margin-top:7px;color:var(--muted);font-weight:600;line-height:1.25;white-space:pre-line;padding:0 2px}
+ .step.done .dot{background:var(--green);border-color:var(--green);color:#fff}
+ .step.done .line{background:var(--green)}
+ .step.current .dot{background:var(--orange);border-color:var(--orange);color:#fff;box-shadow:0 0 0 4px rgba(226,87,28,.2)}
+ .step.current .lbl{color:var(--ink)}
+ .note{font-size:12px;color:var(--muted);margin-top:10px;line-height:1.5}
+
+ /* transformador detail cards */
+ .tf-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+ .tf-card{background:var(--surface);border:1px solid var(--border);border-top:4px solid var(--dc,var(--orange));border-radius:13px;padding:18px 20px;box-shadow:var(--shadow)}
+ .tf-card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:4px}
+ .tf-card-head h3{font-size:15px;font-weight:800;margin:0}
+ .tf-current{font-size:12px;color:var(--muted);margin-bottom:14px}
+ .tf-current b{color:var(--ink)}
+ .tf-marco{border-top:1px solid var(--grid);padding:10px 0}
+ .tf-marco:first-of-type{border-top:none;padding-top:0}
+ .tf-marco-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px}
+ .tf-marco-name{font-size:12.5px;font-weight:700;color:var(--ink)}
+ .tf-marco-dates{font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
+ .tf-marco-track{position:relative;height:6px;background:var(--grid);border-radius:3px;overflow:hidden}
+ .tf-marco-fill{position:absolute;left:0;top:0;bottom:0;border-radius:3px}
+
+ .marcos-gerais{display:flex;flex-wrap:wrap;gap:10px}
+ .marco-geral-chip{display:flex;align-items:center;gap:9px;background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:9px 15px;font-size:12px}
+ .marco-geral-chip .dot2{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+ .marco-geral-chip .name{font-weight:700;color:var(--ink)}
+ .marco-geral-chip .date{color:var(--muted);font-size:11px}
+
+ footer{background:var(--headbg);color:var(--headmut);margin-top:10px;padding:16px 0;border-radius:0 0 14px 14px}
+ footer .in{max-width:1180px;margin:0 auto;padding:0 22px;font-size:12px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+ footer b{color:var(--orange)}
+ @media (max-width:600px){footer .in{flex-direction:column}}
 </style>
 
-<div class="viz-root" data-palette="#2a78d6,#1baf7a,#eda100,#008300,#4a3aa7,#e34948,#e87ba4,#eb6834">
+<div class="viz-root">
+<div class="topbar"><div class="topbar-in">
+ <div class="brand"><div class="et">ET</div><div class="nm">ENGETECNICA <span>Engenharia e Construção</span></div></div>
+ <div class="rgt">FORNECIMENTO WEG · 4 TRANSFORMADORES<br><b>CONTROLE DE FABRICAÇÃO E CRONOGRAMA</b></div>
+</div></div>
+<div class="accent"></div>
 
-  <div class="header">
-    <div>
-      <h1>Controle WEG — Transformadores</h1>
-      <div class="sub">SE UTE Pilar / LT / SE Rio Largo II · 230 kV</div>
-    </div>
-    <div class="meta">Atualizado em <span id="updated-date"></span></div>
-  </div>
+<div class="wrap">
+ <div class="sub">
+   <div>
+     <div class="eyebrow">CONTRATO WEG · TRANSFORMADORES 160.000 kVA</div>
+     <h1>Controle WEG — SE UTE Pilar / SE Rio Largo II</h1>
+     <div class="dsc">230 kV · Atualizado em <span id="updated-date"></span></div>
+   </div>
+ </div>
 
-  <div class="stat-row" id="stat-row-weg"></div>
+ <div class="tabs" id="tabs">
+   <button class="tab on" data-t="geral">Visão Geral</button>
+   <button class="tab" data-t="documentos">Documentos</button>
+   <button class="tab" data-t="transformadores">Transformadores</button>
+ </div>
 
-  <div class="panel">
-    <h2>Documentos de projeto — Engenharia</h2>
-    <div class="panel-sub" id="weg-sub"></div>
-    <div class="table-scroll">
-      <table class="data" id="weg-table">
-        <thead><tr><th>Documento</th><th>Rev.</th><th>Status</th><th>Dias na fase</th><th>Comentários</th></tr></thead>
-        <tbody></tbody>
-      </table>
-    </div>
-  </div>
+ <!-- ===================== TAB 1: VISÃO GERAL ===================== -->
+ <div class="panel on" data-p="geral">
+   <div class="kpis" id="stat-row-weg"></div>
 
-  <div class="panel">
-    <h2>Pipeline de fabricação — 4 transformadores</h2>
-    <div class="panel-sub">Engenharia &rarr; Fabricação &rarr; TAC &rarr; Envio à obra &rarr; Entrega em obra &rarr; Montagem &rarr; Comissionamento</div>
-    <div id="weg-transformadores"></div>
-  </div>
+   <div class="card">
+     <h3>Documentos por status</h3>
+     <p class="cap">Situação atual dos 16 documentos de engenharia, compartilhados pelos 4 transformadores</p>
+     <div id="chart-doc-status"></div>
+   </div>
 
-  <div class="panel">
-    <h2>Marcos Contratuais — Cronograma</h2>
-    <div class="panel-sub">Datas de início/fim do cronograma de fabricação (contrato WEG). Passe o mouse numa barra para ver o período.</div>
-    <div class="gantt-scroll">
-      <div id="gantt-header" class="gantt-header"></div>
-      <div id="gantt-body"></div>
-    </div>
-    <div class="gantt-legend">
-      <span><i class="gantt-dot" style="background:var(--status-good)"></i> Concluído</span>
-      <span><i class="gantt-dot" style="background:var(--s1)"></i> Em andamento</span>
-      <span><i class="gantt-dot" style="background:var(--baseline)"></i> Não iniciado</span>
-    </div>
-  </div>
+   <div class="card" style="box-shadow:none;border:none;padding:0;background:none;">
+     <div class="panelhead"><div class="t">Pipeline de fabricação — 4 transformadores</div></div>
+     <p class="cap" style="margin:-8px 0 14px;">Engenharia &rarr; Fabricação &rarr; TAC &rarr; Envio à obra &rarr; Entrega em obra &rarr; Montagem &rarr; Comissionamento</p>
+     <div id="weg-transformadores"></div>
+   </div>
+ </div>
 
-  <div class="foot">Dashboard gerado a partir de "1. Controle de Suprimentos.xlsx" (aba Controle WEG). Sem valores financeiros.</div>
+ <!-- ===================== TAB 2: DOCUMENTOS ===================== -->
+ <div class="panel" data-p="documentos">
+   <div class="card">
+     <h3>Documentos de projeto — Engenharia</h3>
+     <p class="cap" id="weg-sub"></p>
+     <div class="table-scroll">
+       <table class="tbl" id="weg-table">
+         <thead><tr><th>Documento</th><th>Rev. atual</th><th>Nº revisões</th><th>Status</th><th>Dias na fase</th><th>Comentários</th></tr></thead>
+         <tbody></tbody>
+       </table>
+     </div>
+   </div>
+ </div>
+
+ <!-- ===================== TAB 3: TRANSFORMADORES (detalhe contratual) ===================== -->
+ <div class="panel" data-p="transformadores">
+   <div class="card">
+     <h3>Marcos gerais do contrato</h3>
+     <p class="cap">Compartilhados entre os 4 transformadores</p>
+     <div class="marcos-gerais" id="marcos-gerais"></div>
+   </div>
+
+   <div class="tf-grid" id="tf-grid"></div>
+ </div>
+</div>
+
+<footer><div class="in"><span>CONTROLE WEG · <b>ENGETECNICA</b> · SE UTE Pilar · SE Rio Largo II · 230 kV</span><span>Sem valores financeiros — apenas quantidades, revisões e cronograma</span></div></footer>
 </div>
 
 <script>
-const RAW = {"weg": {"projetos": [{"descricao": "Lista de Documentos", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "Analise Engetecnica", "dias": 5}, {"descricao": "CADERNO DE BUCHAS", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "Analise Engetecnica", "dias": 5}, {"descricao": "CADERNO DE CONECTORES DE BUCHAS", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "Analise Engetecnica", "dias": 5}, {"descricao": "FOLHA DE DADOS", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "Analise Engetecnica", "dias": 5}, {"descricao": "DESCRITIVOS DE PINTURA", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "Analise Engetecnica", "dias": 5}, {"descricao": "DIAGRAMA DOS EQUIPAMENTOS AUXILIARES", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "Analise Engetecnica", "dias": 5}, {"descricao": "DIMENSÕES EXTERNAS", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "Analise Engetecnica", "dias": 5}, {"descricao": "DIMENSÕES DE TRANSPORTE", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "Analise Engetecnica", "dias": 5}, {"descricao": "PLACA DE IDENTIFICAÇÃO", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "Analise Engetecnica", "dias": 5}, {"descricao": "PLANO DE INSPEÇÃO E CONTROLE DE QUALIDADE", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "Analise Engetecnica", "dias": 5}, {"descricao": "MOTOVENTILADOR", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "Analise Engetecnica", "dias": 5}, {"descricao": "SENSOR DE TEMPERATURA DO ÓLEO (PT100)", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "Analise Engetecnica", "dias": 5}, {"descricao": "CATÁLOGOS DE COMPONENTES", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "Analise Engetecnica", "dias": 5}, {"descricao": "MANUAIS DE COMPONENTES", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "Analise Engetecnica", "dias": 5}, {"descricao": "MANUAL DE INSTRUÇÃO E OPERAÇÃO DO EQUIPAMENTO", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "Analise Engetecnica", "dias": 5}, {"descricao": "DESIGN REVIEW", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "Analise Engetecnica", "dias": 5}], "transformadores": {"TR1": [{"descricao": "Engenharia", "comentarios": null, "rev": "0A", "status": "DesenvolvimentoWEG", "dias": 5}, {"descricao": "Fabricação", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "TAC", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "Envio a obra", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "Entrega a obra", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "Montagem", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "Comissionamento", "comentarios": null, "rev": null, "status": null, "dias": null}], "TR2": [{"descricao": "Engenharia", "comentarios": null, "rev": "0A", "status": "DesenvolvimentoWEG", "dias": 7}, {"descricao": "Fabricação", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "TAC", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "Envio a obra", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "Entrega a obra", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "Montagem", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "Comissionamento", "comentarios": null, "rev": null, "status": null, "dias": null}], "TR3": [{"descricao": "Engenharia", "comentarios": null, "rev": "0A", "status": "DesenvolvimentoWEG", "dias": 7}, {"descricao": "Fabricação", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "TAC", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "Envio a obra", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "Entrega a obra", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "Montagem", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "Comissionamento", "comentarios": null, "rev": null, "status": null, "dias": null}], "TR4": [{"descricao": "Engenharia", "comentarios": null, "rev": "0A", "status": "DesenvolvimentoWEG", "dias": 7}, {"descricao": "Fabricação", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "TAC", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "Envio a obra", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "Entrega a obra", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "Montagem", "comentarios": null, "rev": null, "status": null, "dias": null}, {"descricao": "Comissionamento", "comentarios": null, "rev": null, "status": null, "dias": null}]}}, "marcos": [{"marco": "Assinatura do Contrato", "transformador": "Compartilhado", "data_inicio": "2026-05-11T03:00:00", "data_fim": "2026-05-11T03:00:00", "status": "Concluído"}, {"marco": "Aprovação dos Desenhos", "transformador": "Compartilhado", "data_inicio": "2026-07-22T03:00:00", "data_fim": "2026-08-11T03:00:00", "status": "Em andamento"}, {"marco": "Bobinas", "transformador": "Transformador 1", "data_inicio": "2027-04-21T03:00:00", "data_fim": "2027-06-11T03:00:00", "status": "Não iniciado"}, {"marco": "Núcleo", "transformador": "Transformador 1", "data_inicio": "2027-05-06T03:00:00", "data_fim": "2027-06-11T03:00:00", "status": "Não iniciado"}, {"marco": "Ensaios, Inspeção e Relatórios", "transformador": "Transformador 1", "data_inicio": "2027-08-24T03:00:00", "data_fim": "2027-09-28T03:00:00", "status": "Não iniciado"}, {"marco": "Transporte até Pilar/AL", "transformador": "Transformador 1", "data_inicio": "2027-11-18T03:00:00", "data_fim": "2027-12-08T03:00:00", "status": "Não iniciado"}, {"marco": "Bobinas", "transformador": "Transformador 2", "data_inicio": "2027-04-26T03:00:00", "data_fim": "2027-06-16T03:00:00", "status": "Não iniciado"}, {"marco": "Núcleo", "transformador": "Transformador 2", "data_inicio": "2027-05-11T03:00:00", "data_fim": "2027-06-16T03:00:00", "status": "Não iniciado"}, {"marco": "Ensaios, Inspeção e Relatórios", "transformador": "Transformador 2", "data_inicio": "2027-08-27T03:00:00", "data_fim": "2027-09-30T03:00:00", "status": "Não iniciado"}, {"marco": "Transporte até Pilar/AL", "transformador": "Transformador 2", "data_inicio": "2027-11-19T03:00:00", "data_fim": "2027-12-09T03:00:00", "status": "Não iniciado"}, {"marco": "Bobinas", "transformador": "Transformador 3", "data_inicio": "2027-04-26T03:00:00", "data_fim": "2027-06-16T03:00:00", "status": "Não iniciado"}, {"marco": "Núcleo", "transformador": "Transformador 3", "data_inicio": "2027-05-11T03:00:00", "data_fim": "2027-06-16T03:00:00", "status": "Não iniciado"}, {"marco": "Ensaios, Inspeção e Relatórios", "transformador": "Transformador 3", "data_inicio": "2027-08-30T03:00:00", "data_fim": "2027-09-30T03:00:00", "status": "Não iniciado"}, {"marco": "Transporte até Pilar/AL", "transformador": "Transformador 3", "data_inicio": "2027-11-23T03:00:00", "data_fim": "2027-12-13T03:00:00", "status": "Não iniciado"}, {"marco": "Bobinas", "transformador": "Transformador 4", "data_inicio": "2027-04-27T03:00:00", "data_fim": "2027-06-17T03:00:00", "status": "Não iniciado"}, {"marco": "Núcleo", "transformador": "Transformador 4", "data_inicio": "2027-05-12T03:00:00", "data_fim": "2027-06-17T03:00:00", "status": "Não iniciado"}, {"marco": "Ensaios, Inspeção e Relatórios", "transformador": "Transformador 4", "data_inicio": "2027-08-30T03:00:00", "data_fim": "2027-10-01T03:00:00", "status": "Não iniciado"}, {"marco": "Transporte até Pilar/AL", "transformador": "Transformador 4", "data_inicio": "2027-11-24T03:00:00", "data_fim": "2027-12-14T03:00:00", "status": "Não iniciado"}, {"marco": "Entrega do 1º equipamento na obra", "transformador": "Geral", "data_inicio": null, "data_fim": "2027-12-14T03:00:00", "status": "Não iniciado"}, {"marco": "Data Contratual de Aceitação Provisória", "transformador": "Geral", "data_inicio": null, "data_fim": "2028-02-20T03:00:00", "status": "Não iniciado"}]};
+const RAW = {"weg": {"projetos": [{"descricao": "Lista de Documentos", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "DesenvolvimentoWEG", "dias": 1, "revisoes": 1}, {"descricao": "CADERNO DE BUCHAS", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "DesenvolvimentoWEG", "dias": 1, "revisoes": 1}, {"descricao": "CADERNO DE CONECTORES DE BUCHAS", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "DesenvolvimentoWEG", "dias": 1, "revisoes": 1}, {"descricao": "FOLHA DE DADOS", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "DesenvolvimentoWEG", "dias": 1, "revisoes": 1}, {"descricao": "DESCRITIVOS DE PINTURA", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "DesenvolvimentoWEG", "dias": 1, "revisoes": 1}, {"descricao": "DIAGRAMA DOS EQUIPAMENTOS AUXILIARES", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "DesenvolvimentoWEG", "dias": 1, "revisoes": 1}, {"descricao": "DIMENSÕES EXTERNAS", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "DesenvolvimentoWEG", "dias": 1, "revisoes": 1}, {"descricao": "DIMENSÕES DE TRANSPORTE", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "DesenvolvimentoWEG", "dias": 1, "revisoes": 1}, {"descricao": "PLACA DE IDENTIFICAÇÃO", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "DesenvolvimentoWEG", "dias": 1, "revisoes": 1}, {"descricao": "PLANO DE INSPEÇÃO E CONTROLE DE QUALIDADE", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "DesenvolvimentoWEG", "dias": 1, "revisoes": 1}, {"descricao": "MOTOVENTILADOR", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "DesenvolvimentoWEG", "dias": 1, "revisoes": 1}, {"descricao": "SENSOR DE TEMPERATURA DO ÓLEO (PT100)", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "DesenvolvimentoWEG", "dias": 1, "revisoes": 1}, {"descricao": "CATÁLOGOS DE COMPONENTES", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "DesenvolvimentoWEG", "dias": 1, "revisoes": 1}, {"descricao": "MANUAIS DE COMPONENTES", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "DesenvolvimentoWEG", "dias": 1, "revisoes": 1}, {"descricao": "MANUAL DE INSTRUÇÃO E OPERAÇÃO DO EQUIPAMENTO", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "DesenvolvimentoWEG", "dias": 1, "revisoes": 1}, {"descricao": "DESIGN REVIEW", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "DesenvolvimentoWEG", "dias": 1, "revisoes": 1}], "transformadores": {"TR1": [{"descricao": "Engenharia", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "DesenvolvimentoWEG", "dias": 1, "revisoes": 1}, {"descricao": "Fabricação", "comentarios": null, "rev": null, "status": null, "dias": null, "revisoes": 0}, {"descricao": "TAF", "comentarios": null, "rev": null, "status": null, "dias": null, "revisoes": 0}, {"descricao": "Envio a obra", "comentarios": null, "rev": null, "status": null, "dias": null, "revisoes": 0}, {"descricao": "Entrega a obra", "comentarios": null, "rev": null, "status": null, "dias": null, "revisoes": 0}, {"descricao": "Montagem", "comentarios": null, "rev": null, "status": null, "dias": null, "revisoes": 0}, {"descricao": "Comissionamento", "comentarios": null, "rev": null, "status": null, "dias": null, "revisoes": 0}], "TR2": [{"descricao": "Engenharia", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "DesenvolvimentoWEG", "dias": 1, "revisoes": 1}, {"descricao": "Fabricação", "comentarios": null, "rev": null, "status": null, "dias": null, "revisoes": 0}, {"descricao": "TAF", "comentarios": null, "rev": null, "status": null, "dias": null, "revisoes": 0}, {"descricao": "Envio a obra", "comentarios": null, "rev": null, "status": null, "dias": null, "revisoes": 0}, {"descricao": "Entrega a obra", "comentarios": null, "rev": null, "status": null, "dias": null, "revisoes": 0}, {"descricao": "Montagem", "comentarios": null, "rev": null, "status": null, "dias": null, "revisoes": 0}, {"descricao": "Comissionamento", "comentarios": null, "rev": null, "status": null, "dias": null, "revisoes": 0}], "TR3": [{"descricao": "Engenharia", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "DesenvolvimentoWEG", "dias": 1, "revisoes": 1}, {"descricao": "Fabricação", "comentarios": null, "rev": null, "status": null, "dias": null, "revisoes": 0}, {"descricao": "TAF", "comentarios": null, "rev": null, "status": null, "dias": null, "revisoes": 0}, {"descricao": "Envio a obra", "comentarios": null, "rev": null, "status": null, "dias": null, "revisoes": 0}, {"descricao": "Entrega a obra", "comentarios": null, "rev": null, "status": null, "dias": null, "revisoes": 0}, {"descricao": "Montagem", "comentarios": null, "rev": null, "status": null, "dias": null, "revisoes": 0}, {"descricao": "Comissionamento", "comentarios": null, "rev": null, "status": null, "dias": null, "revisoes": 0}], "TR4": [{"descricao": "Engenharia", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "DesenvolvimentoWEG", "dias": 1, "revisoes": 1}, {"descricao": "Fabricação", "comentarios": null, "rev": null, "status": null, "dias": null, "revisoes": 0}, {"descricao": "TAF", "comentarios": null, "rev": null, "status": null, "dias": null, "revisoes": 0}, {"descricao": "Envio a obra", "comentarios": null, "rev": null, "status": null, "dias": null, "revisoes": 0}, {"descricao": "Entrega a obra", "comentarios": null, "rev": null, "status": null, "dias": null, "revisoes": 0}, {"descricao": "Montagem", "comentarios": null, "rev": null, "status": null, "dias": null, "revisoes": 0}, {"descricao": "Comissionamento", "comentarios": null, "rev": null, "status": null, "dias": null, "revisoes": 0}]}}, "marcos": [{"marco": "Marco", "transformador": "Transformador", "data_inicio": "Data Início", "data_fim": "Data Fim", "status": "Status"}, {"marco": "Assinatura do Contrato", "transformador": "Compartilhado", "data_inicio": "2026-05-11T03:00:00", "data_fim": "2026-05-11T03:00:00", "status": "Concluído"}, {"marco": "Aprovação dos Desenhos", "transformador": "Compartilhado", "data_inicio": "2026-07-22T03:00:00", "data_fim": "2026-08-11T03:00:00", "status": "Em andamento"}, {"marco": "Bobinas", "transformador": "Transformador 1", "data_inicio": "2027-04-21T03:00:00", "data_fim": "2027-06-11T03:00:00", "status": "Não iniciado"}, {"marco": "Núcleo", "transformador": "Transformador 1", "data_inicio": "2027-05-06T03:00:00", "data_fim": "2027-06-11T03:00:00", "status": "Não iniciado"}, {"marco": "Ensaios, Inspeção e Relatórios", "transformador": "Transformador 1", "data_inicio": "2027-08-24T03:00:00", "data_fim": "2027-09-28T03:00:00", "status": "Não iniciado"}, {"marco": "Transporte até Pilar/AL", "transformador": "Transformador 1", "data_inicio": "2027-11-18T03:00:00", "data_fim": "2027-12-08T03:00:00", "status": "Não iniciado"}, {"marco": "Bobinas", "transformador": "Transformador 2", "data_inicio": "2027-04-26T03:00:00", "data_fim": "2027-06-16T03:00:00", "status": "Não iniciado"}, {"marco": "Núcleo", "transformador": "Transformador 2", "data_inicio": "2027-05-11T03:00:00", "data_fim": "2027-06-16T03:00:00", "status": "Não iniciado"}, {"marco": "Ensaios, Inspeção e Relatórios", "transformador": "Transformador 2", "data_inicio": "2027-08-27T03:00:00", "data_fim": "2027-09-30T03:00:00", "status": "Não iniciado"}, {"marco": "Transporte até Pilar/AL", "transformador": "Transformador 2", "data_inicio": "2027-11-19T03:00:00", "data_fim": "2027-12-09T03:00:00", "status": "Não iniciado"}, {"marco": "Bobinas", "transformador": "Transformador 3", "data_inicio": "2027-04-26T03:00:00", "data_fim": "2027-06-16T03:00:00", "status": "Não iniciado"}, {"marco": "Núcleo", "transformador": "Transformador 3", "data_inicio": "2027-05-11T03:00:00", "data_fim": "2027-06-16T03:00:00", "status": "Não iniciado"}, {"marco": "Ensaios, Inspeção e Relatórios", "transformador": "Transformador 3", "data_inicio": "2027-08-30T03:00:00", "data_fim": "2027-09-30T03:00:00", "status": "Não iniciado"}, {"marco": "Transporte até Pilar/AL", "transformador": "Transformador 3", "data_inicio": "2027-11-23T03:00:00", "data_fim": "2027-12-13T03:00:00", "status": "Não iniciado"}, {"marco": "Bobinas", "transformador": "Transformador 4", "data_inicio": "2027-04-27T03:00:00", "data_fim": "2027-06-17T03:00:00", "status": "Não iniciado"}, {"marco": "Núcleo", "transformador": "Transformador 4", "data_inicio": "2027-05-12T03:00:00", "data_fim": "2027-06-17T03:00:00", "status": "Não iniciado"}, {"marco": "Ensaios, Inspeção e Relatórios", "transformador": "Transformador 4", "data_inicio": "2027-08-30T03:00:00", "data_fim": "2027-10-01T03:00:00", "status": "Não iniciado"}, {"marco": "Transporte até Pilar/AL", "transformador": "Transformador 4", "data_inicio": "2027-11-24T03:00:00", "data_fim": "2027-12-14T03:00:00", "status": "Não iniciado"}, {"marco": "Entrega do 1º equipamento na obra", "transformador": "Geral", "data_inicio": null, "data_fim": "2027-12-14T03:00:00", "status": "Não iniciado"}, {"marco": "Data Contratual de Aceitação Provisória", "transformador": "Geral", "data_inicio": null, "data_fim": "2028-02-20T03:00:00", "status": "Não iniciado"}]};
 const NOW = new Date();
 document.getElementById("updated-date").textContent = NOW.toLocaleDateString("pt-BR");
 
-function statTile(s) {
+/* ---------------- Tabs ---------------- */
+document.querySelectorAll(".tab").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".tab").forEach(b => b.classList.remove("on"));
+    document.querySelectorAll(".panel").forEach(p => p.classList.remove("on"));
+    btn.classList.add("on");
+    document.querySelector(`.panel[data-p="${btn.dataset.t}"]`).classList.add("on");
+  });
+});
+
+function kpiTile(s) {
   const el = document.createElement("div");
-  el.className = "stat-tile" + (s.alert ? " alert" : "");
-  el.innerHTML = `<div class="label">${s.label}</div><div class="value">${s.value}</div><div class="sub">${s.sub}</div>`;
+  el.className = "kpi";
+  if (s.k) el.style.setProperty("--k", s.k);
+  el.innerHTML = `<div class="l">${s.label}</div><div class="v${s.alert ? " alert" : ""}">${s.value}</div><div class="s">${s.sub}</div>`;
   return el;
+}
+
+const PALETTE = ["var(--blue)","var(--green)","var(--amber)","var(--purple)","var(--teal)","var(--red)","var(--slate)","var(--orange)"];
+function renderBarChart(containerId, groups) {
+  const el = document.getElementById(containerId);
+  el.innerHTML = "";
+  const max = Math.max(...groups.map(g => g.count), 1);
+  groups.forEach((g, i) => {
+    const row = document.createElement("div");
+    row.className = "bar-row";
+    const pct = Math.round((g.count / max) * 100);
+    row.innerHTML = `<div class="bname">${g.label}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${PALETTE[i % PALETTE.length]}"></div></div>
+      <div class="bar-val">${g.count}</div>`;
+    el.appendChild(row);
+  });
 }
 
 const STAGES = ["Engenharia","Fabricação","TAC","Envio a obra","Entrega a obra","Montagem","Comissionamento"];
 function wegStatusChip(status) {
-  if (!status) return { label: "Não iniciado", cls: "chip-neutral" };
+  if (!status) return { label: "Não iniciado", cls: "sem" };
   const s = String(status).toUpperCase();
-  if (s.includes("REPROVADO") || s.includes("NAO CONFORME") || s.includes("NÃO CONFORME")) return { label: "Reprovado", cls: "chip-late" };
-  if (s.includes("APROVADO") || s.includes("CONCLU")) return { label: "Concluído", cls: "chip-done" };
-  if (s.includes("DESENVOLVIMENTO")) return { label: "Em desenvolvimento (WEG)", cls: "chip-forn" };
-  if (s.includes("ANALISE") || s.includes("ANÁLISE")) return { label: "Em análise (Engetécnica)", cls: "chip-eng" };
-  return { label: status, cls: "chip-neutral" };
+  if (s.includes("REPROVADO") || s.includes("NAO CONFORME") || s.includes("NÃO CONFORME")) return { label: "Reprovado", cls: "atr" };
+  if (s.includes("APROVADO") || s.includes("CONCLU")) return { label: "Concluído", cls: "done" };
+  if (s.includes("DESENVOLVIMENTO")) return { label: "Em desenvolvimento (WEG)", cls: "forn" };
+  if (s.includes("ANALISE") || s.includes("ANÁLISE")) return { label: "Em análise (Engetécnica)", cls: "andamento" };
+  return { label: status, cls: "sem" };
 }
 
 const wegProjetos = RAW.weg.projetos;
 const wegTransf = RAW.weg.transformadores;
 const TR_CODES = ["TR1","TR2","TR3","TR4"];
+const TR_COLORS = ["var(--blue)","var(--green)","var(--purple)","var(--teal)"];
 
 const wegReprovados = wegProjetos.filter(p => String(p.status||"").toUpperCase().includes("REPROVADO")).length;
 const wegConcluidos = wegProjetos.filter(p => /APROVADO|CONCLU/.test(String(p.status||"").toUpperCase())).length;
@@ -193,26 +245,21 @@ const wegEmFabricacao = TR_CODES.filter(code => {
   return idx >= 1;
 }).length;
 
+/* ---------------- TAB 1: Visão Geral ---------------- */
 const statRowWeg = document.getElementById("stat-row-weg");
 [
-  { label: "Documentos de projeto", value: wegProjetos.length, sub: "compartilhados entre os 4 transformadores" },
-  { label: "Aprovados", value: wegConcluidos, sub: `de ${wegProjetos.length}` },
-  { label: "Reprovados / pendentes", value: wegReprovados, sub: "precisam de nova revisão", alert: wegReprovados > 0 },
-  { label: "Transformadores em fabricação", value: wegEmFabricacao, sub: "de 4 (fase além de Engenharia)" },
-].forEach(s => statRowWeg.appendChild(statTile(s)));
+  { label: "Documentos de projeto", value: wegProjetos.length, sub: "compartilhados entre os 4 transformadores", k: "var(--blue)" },
+  { label: "Aprovados", value: wegConcluidos, sub: `de ${wegProjetos.length}`, k: "var(--green)" },
+  { label: "Reprovados / pendentes", value: wegReprovados, sub: "precisam de nova revisão", alert: wegReprovados > 0, k: "var(--red)" },
+  { label: "Transformadores em fabricação", value: wegEmFabricacao, sub: "de 4 (fase além de Engenharia)", k: "var(--orange)" },
+].forEach(s => statRowWeg.appendChild(kpiTile(s)));
 
-document.getElementById("weg-sub").textContent = `${wegProjetos.length} documentos previstos · compartilhados pelos 4 transformadores idênticos`;
-const wegBody = document.querySelector("#weg-table tbody");
+const statusGroups = {};
 wegProjetos.forEach(d => {
-  const chip = wegStatusChip(d.status);
-  const tr = document.createElement("tr");
-  tr.innerHTML = `<td class="wrap">${d.descricao||"—"}</td>
-    <td>${d.rev||"—"}</td>
-    <td><span class="chip ${chip.cls}">${chip.label}</span></td>
-    <td class="num">${d.dias ?? "—"}</td>
-    <td class="wrap">${d.comentarios||"—"}</td>`;
-  wegBody.appendChild(tr);
+  const label = wegStatusChip(d.status).label;
+  statusGroups[label] = (statusGroups[label] || 0) + 1;
 });
+renderBarChart("chart-doc-status", Object.entries(statusGroups).map(([label, count]) => ({ label, count })).sort((a,b) => b.count - a.count));
 
 const wegTransfWrap = document.getElementById("weg-transformadores");
 TR_CODES.forEach((code, idx) => {
@@ -223,6 +270,7 @@ TR_CODES.forEach((code, idx) => {
   const chip = wegStatusChip(cur.status);
   const card = document.createElement("div");
   card.className = "tr-card";
+  card.style.setProperty("--dc", TR_COLORS[idx]);
   const stepsHtml = STAGES.map((label, i) => {
     let cls = "pending";
     if (i < currentIdx) cls = "done";
@@ -233,7 +281,7 @@ TR_CODES.forEach((code, idx) => {
     <div class="tr-card-head">
       <h3>Transformador ${idx+1}</h3>
       <div style="display:flex;align-items:center;gap:10px;">
-        <span class="chip ${chip.cls}">${chip.label}</span>
+        <span class="sp ${chip.cls}">${chip.label}</span>
         ${cur.dias != null ? `<span class="note" style="margin:0;">${cur.dias} dia(s) na fase</span>` : ""}
       </div>
     </div>
@@ -243,84 +291,87 @@ TR_CODES.forEach((code, idx) => {
   wegTransfWrap.appendChild(card);
 });
 
-/* =========================== MARCOS CONTRATUAIS — CRONOGRAMA =========================== */
+/* ---------------- TAB 2: Documentos ---------------- */
+document.getElementById("weg-sub").textContent = `${wegProjetos.length} documentos previstos · compartilhados pelos 4 transformadores idênticos`;
+const wegBody = document.querySelector("#weg-table tbody");
+wegProjetos.forEach(d => {
+  const chip = wegStatusChip(d.status);
+  const tr = document.createElement("tr");
+  tr.innerHTML = `<td class="d">${d.descricao||"—"}</td>
+    <td>${d.rev||"—"}</td>
+    <td class="num">${d.revisoes ?? "—"}</td>
+    <td><span class="sp ${chip.cls}">${chip.label}</span></td>
+    <td class="num">${d.dias ?? "—"}</td>
+    <td class="d">${d.comentarios||"—"}</td>`;
+  wegBody.appendChild(tr);
+});
+
+/* ---------------- TAB 3: Transformadores (detalhe contratual) ---------------- */
 const marcos = RAW.marcos || [];
-if (marcos.length) {
-  const MESES_PT = ["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
-  function marcoStatusColor(status) {
-    const s = String(status || "").toUpperCase();
-    if (s.includes("CONCLU")) return "var(--status-good)";
-    if (s.includes("ANDAMENTO")) return "var(--s1)";
-    return "var(--baseline)";
-  }
-  const dates = [];
-  marcos.forEach(m => { if (m.data_inicio) dates.push(new Date(m.data_inicio)); if (m.data_fim) dates.push(new Date(m.data_fim)); });
-  const tMin = new Date(Math.min(...dates));
-  const tMax = new Date(Math.max(...dates));
-  // margem de ~5% em cada ponta para nao colar bordas
-  const span = tMax - tMin;
-  const rangeStart = new Date(tMin.getTime() - span * 0.03);
-  const rangeEnd = new Date(tMax.getTime() + span * 0.03);
-  const rangeSpan = rangeEnd - rangeStart;
-  function pct(d) { return ((d - rangeStart) / rangeSpan) * 100; }
-
-  const ganttHeader = document.getElementById("gantt-header");
-  const ticksWrap = document.createElement("div");
-  ticksWrap.className = "gantt-ticks";
-  let cursor = new Date(tMin.getFullYear(), tMin.getMonth(), 1);
-  while (cursor <= rangeEnd) {
-    if (cursor >= rangeStart) {
-      const tick = document.createElement("div");
-      tick.className = "gantt-tick";
-      tick.style.left = pct(cursor) + "%";
-      tick.textContent = `${MESES_PT[cursor.getMonth()]}/${String(cursor.getFullYear()).slice(2)}`;
-      ticksWrap.appendChild(tick);
-    }
-    cursor = new Date(cursor.getFullYear(), cursor.getMonth() + 2, 1);
-  }
-  ganttHeader.innerHTML = '<div class="gantt-label-spacer"></div>';
-  ganttHeader.appendChild(ticksWrap);
-
-  const ganttBody = document.getElementById("gantt-body");
-  marcos.forEach(m => {
-    const row = document.createElement("div");
-    row.className = "gantt-row";
-    const color = marcoStatusColor(m.status);
-    const label = document.createElement("div");
-    label.className = "gantt-label";
-    label.innerHTML = `${m.marco}<span class="sub">${m.transformador}</span>`;
-    const trackArea = document.createElement("div");
-    trackArea.className = "gantt-track-area";
-    const track = document.createElement("div");
-    track.className = "gantt-track";
-    if (NOW >= rangeStart && NOW <= rangeEnd) {
-      const todayLine = document.createElement("div");
-      todayLine.className = "gantt-today";
-      todayLine.style.left = pct(NOW) + "%";
-      track.appendChild(todayLine);
-    }
-    if (m.data_inicio && m.data_fim) {
-      const d1 = new Date(m.data_inicio), d2 = new Date(m.data_fim);
-      const bar = document.createElement("div");
-      bar.className = "gantt-bar";
-      bar.style.left = pct(d1) + "%";
-      bar.style.width = Math.max(pct(d2) - pct(d1), 0.6) + "%";
-      bar.style.background = color;
-      bar.title = `${m.marco} (${m.transformador})\n${fmtDate(m.data_inicio)} – ${fmtDate(m.data_fim)}\n${m.status}`;
-      track.appendChild(bar);
-    } else if (m.data_fim) {
-      const point = document.createElement("div");
-      point.className = "gantt-point";
-      point.style.left = pct(new Date(m.data_fim)) + "%";
-      point.style.background = color;
-      point.title = `${m.marco}\n${fmtDate(m.data_fim)}\n${m.status}`;
-      track.appendChild(point);
-    }
-    trackArea.appendChild(track);
-    row.appendChild(label);
-    row.appendChild(trackArea);
-    ganttBody.appendChild(row);
-  });
+function fmtDate(iso) { return iso ? new Date(iso).toLocaleDateString("pt-BR") : "—"; }
+function marcoStatusInfo(m) {
+  const s = String(m.status || "").toUpperCase();
+  const fimPassado = m.data_fim && new Date(m.data_fim) < NOW;
+  if (s.includes("CONCLU")) return { label: "Concluído", color: "var(--green)", cls: "done" };
+  if (fimPassado) return { label: "Atrasado", color: "var(--red)", cls: "atr" };
+  if (s.includes("ANDAMENTO")) return { label: "Em andamento", color: "var(--blue)", cls: "andamento" };
+  return { label: "Não iniciado", color: "var(--slate)", cls: "sem" };
 }
-function fmtDate(iso) { return new Date(iso).toLocaleDateString("pt-BR"); }
+
+const marcosGerais = marcos.filter(m => m.transformador === "Compartilhado" || m.transformador === "Geral");
+const marcosGeraisWrap = document.getElementById("marcos-gerais");
+marcosGerais.forEach(m => {
+  const info = marcoStatusInfo(m);
+  const chip = document.createElement("div");
+  chip.className = "marco-geral-chip";
+  const dateLabel = m.data_inicio ? `${fmtDate(m.data_inicio)} – ${fmtDate(m.data_fim)}` : fmtDate(m.data_fim);
+  chip.innerHTML = `<span class="dot2" style="background:${info.color}"></span>
+    <span><span class="name">${m.marco}</span><br><span class="date">${dateLabel}</span></span>`;
+  marcosGeraisWrap.appendChild(chip);
+});
+
+const tfGrid = document.getElementById("tf-grid");
+TR_CODES.forEach((code, idx) => {
+  const nome = `Transformador ${idx + 1}`;
+  const rows = wegTransf[code] || [];
+  let currentIdx = 0;
+  rows.forEach((r, i) => { if (r.status) currentIdx = i; });
+  const cur = rows[currentIdx] || {};
+  const curChip = wegStatusChip(cur.status);
+  const meusMarcos = marcos.filter(m => m.transformador === nome);
+
+  const card = document.createElement("div");
+  card.className = "tf-card";
+  card.style.setProperty("--dc", TR_COLORS[idx]);
+  const marcosHtml = meusMarcos.map(m => {
+    const info = marcoStatusInfo(m);
+    let fillPct = 0;
+    if (info.label === "Concluído") fillPct = 100;
+    else if (m.data_inicio && m.data_fim) {
+      const d1 = new Date(m.data_inicio), d2 = new Date(m.data_fim);
+      fillPct = Math.max(0, Math.min(100, ((NOW - d1) / (d2 - d1)) * 100));
+    }
+    const dateLabel = m.data_inicio ? `${fmtDate(m.data_inicio)} – ${fmtDate(m.data_fim)}` : `até ${fmtDate(m.data_fim)}`;
+    return `<div class="tf-marco">
+        <div class="tf-marco-head">
+          <span class="tf-marco-name">${m.marco}</span>
+          <span class="sp ${info.cls}">${info.label}</span>
+        </div>
+        <div class="tf-marco-head" style="margin-bottom:5px;">
+          <span class="tf-marco-dates">${dateLabel}</span>
+        </div>
+        <div class="tf-marco-track"><div class="tf-marco-fill" style="width:${fillPct}%;background:${info.color}"></div></div>
+      </div>`;
+  }).join("");
+
+  card.innerHTML = `
+    <div class="tf-card-head">
+      <h3>${nome}</h3>
+      <span class="sp ${curChip.cls}">${curChip.label}</span>
+    </div>
+    <div class="tf-current">Onde está: <b>${cur.descricao || "Engenharia"}</b>${cur.dias != null ? ` · ${cur.dias} dia(s) na fase` : ""}</div>
+    ${marcosHtml}
+  `;
+  tfGrid.appendChild(card);
+});
 </script>
