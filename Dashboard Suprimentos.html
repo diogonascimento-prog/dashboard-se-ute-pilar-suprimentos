@@ -169,7 +169,7 @@
   </div>
 
   <div class="tabs-bar" id="tabs-bar">
-    <button class="tab-btn active" data-tab="tab-revisoes">Revisões &amp; Equipamentos</button>
+    <button class="tab-btn active" data-tab="tab-revisoes">Pré Contrato</button>
     <button class="tab-btn" data-tab="tab-procurement">Procurement</button>
   </div>
 
@@ -217,7 +217,7 @@
             <th data-k="item">Item</th><th data-k="categoria_nome">Categoria</th><th data-k="fornecedor">Fornecedor</th>
             <th data-k="qtd">Qtd. orçada</th><th data-k="empreendimento">Obra</th>
             <th data-k="rev_atual">Rev.</th><th data-k="holder">Com quem</th>
-            <th data-k="dias">Dias na fase</th><th data-k="data_ref">Desde</th>
+            <th data-k="dias">Dias na fase</th><th data-k="data_ref">Desde</th><th data-k="prazo">Prazo</th>
           </tr></thead>
           <tbody></tbody>
         </table>
@@ -328,9 +328,16 @@ function classifyHolder(status) {
   return { label: status.trim(), cls: "chip-neutral" };
 }
 
+function latestEnvioPrazo(item) {
+  let prazo = null;
+  for (let n = 1; item[`envio${n}`]; n++) {
+    if (item[`envio${n}`].prazo) prazo = item[`envio${n}`].prazo;
+  }
+  return prazo;
+}
 const pcItems = RAW.precontrato.items.map(i => {
   const holder = classifyHolder(i.status_atual);
-  return { ...i, holder: holder.label, holderCls: holder.cls, dias: i.dias };
+  return { ...i, holder: holder.label, holderCls: holder.cls, dias: i.dias, prazo: latestEnvioPrazo(i) };
 });
 const pcCategories = RAW.precontrato.categories;
 const pcFornecedores = [...new Set(pcItems.map(i => i.fornecedor))];
@@ -437,7 +444,8 @@ function renderTempoTable() {
       <td class="num">${i.qtd ?? "—"}</td><td>${i.empreendimento || "—"}</td>
       <td>${i.rev_atual||"—"}</td>
       <td><span class="chip ${i.holderCls}">${i.holder}</span></td>
-      <td class="num">${i.dias ?? "—"}</td><td>${fmtDate(i.data_referencia_status)}</td>`;
+      <td class="num">${i.dias ?? "—"}</td><td>${fmtDate(i.data_referencia_status)}</td>
+      <td>${fmtDate(i.prazo)}</td>`;
     tempoBody.appendChild(tr);
   });
   const escopoParts = [];
