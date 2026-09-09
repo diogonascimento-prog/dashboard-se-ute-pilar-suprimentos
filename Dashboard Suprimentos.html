@@ -117,6 +117,19 @@
   .chip-neutral { background: var(--chip-neutral-bg); color: var(--chip-neutral-fg); }
   .chip-critico { background: color-mix(in srgb, var(--orange) 20%, transparent); color: var(--orange-ink); }
 
+  /* ---- Situação (Curva A) — cores sólidas, iguais à planilha ---- */
+  .chip-sit-atrasado { background: var(--status-critical); color: #fff; }
+  .chip-sit-critico  { background: var(--status-serious); color: #fff; }
+  .chip-sit-atencao  { background: var(--status-warning); color: #1a2230; }
+  .chip-sit-emprazo  { background: var(--status-good); color: #fff; }
+  .chip-sit-entregue { background: var(--s2); color: #fff; }
+  .chip[class*="chip-sit-"] { padding: 4px 13px; font-size: 11.5px; letter-spacing: .02em; }
+  table.data tbody tr.sit-atrasado { background: color-mix(in srgb, var(--status-critical) 9%, transparent); }
+  table.data tbody tr.sit-critico  { background: color-mix(in srgb, var(--status-serious) 9%, transparent); }
+  table.data tbody tr.sit-atencao  { background: color-mix(in srgb, var(--status-warning) 11%, transparent); }
+  table.data tbody tr.sit-emprazo  { background: color-mix(in srgb, var(--status-good) 6%, transparent); }
+  table.data tbody tr.sit-entregue { background: color-mix(in srgb, var(--s2) 6%, transparent); }
+
   /* ---- Equipment filter chips ---- */
   .equip-filter { display: flex; flex-wrap: wrap; gap: 8px; }
   .filter-chip { font: inherit; font-size: 12.5px; font-weight: 700; cursor: pointer;
@@ -568,8 +581,12 @@ refresh();
 /* =========================== TAB 2: EQUIPAMENTOS CURVA A =========================== */
 const CA_SITUACAO_ORDER = ["ATRASADO", "CRÍTICO", "ATENÇÃO", "EM PRAZO", "ENTREGUE"];
 const CA_SITUACAO_CLS = {
-  "ATRASADO": "chip-late", "CRÍTICO": "chip-critico", "ATENÇÃO": "chip-forn",
-  "EM PRAZO": "chip-neutral", "ENTREGUE": "chip-done",
+  "ATRASADO": "chip-sit-atrasado", "CRÍTICO": "chip-sit-critico", "ATENÇÃO": "chip-sit-atencao",
+  "EM PRAZO": "chip-sit-emprazo", "ENTREGUE": "chip-sit-entregue",
+};
+const CA_ROW_CLS = {
+  "ATRASADO": "sit-atrasado", "CRÍTICO": "sit-critico", "ATENÇÃO": "sit-atencao",
+  "EM PRAZO": "sit-emprazo", "ENTREGUE": "sit-entregue",
 };
 const CA_OBRA_COLOR = { "SE PILAR": "var(--s1)", "SE RIO LARGO II": "var(--s2)", "LT": "var(--s3)" };
 function caSituacaoChip(s) { return { label: s || "—", cls: CA_SITUACAO_CLS[s] || "chip-neutral" }; }
@@ -607,11 +624,11 @@ function renderCaCharts(items) {
   const sitCounts = {};
   items.forEach(i => { const k = i.situacao || "—"; sitCounts[k] = (sitCounts[k]||0) + 1; });
   const sitData = CA_SITUACAO_ORDER.filter(k => sitCounts[k]).map(k => ({ label: k, value: sitCounts[k] }));
-  renderBarChart("chart-ca-situacao", sitData, lbl => {
-    const c = CA_SITUACAO_CLS[lbl];
-    return c === "chip-late" ? "var(--status-critical)" : c === "chip-critico" ? "var(--orange)" :
-      c === "chip-forn" ? "var(--status-warning)" : c === "chip-done" ? "var(--status-good)" : "var(--s9)";
-  });
+  const SIT_BAR_COLOR = {
+    "ATRASADO": "var(--status-critical)", "CRÍTICO": "var(--status-serious)", "ATENÇÃO": "var(--status-warning)",
+    "EM PRAZO": "var(--status-good)", "ENTREGUE": "var(--s2)",
+  };
+  renderBarChart("chart-ca-situacao", sitData, lbl => SIT_BAR_COLOR[lbl] || "var(--s9)");
 }
 
 const caBody = document.querySelector("#curvaa-table tbody");
@@ -633,7 +650,7 @@ function renderCaTable() {
   sorted.forEach(i => {
     const chip = caSituacaoChip(i.situacao);
     const tr = document.createElement("tr");
-    if (i.situacao === "ATRASADO") tr.className = "late";
+    tr.className = CA_ROW_CLS[i.situacao] || "";
     tr.innerHTML = `<td class="wrap">${i.item || "—"}</td><td>${i.obra || "—"}</td><td class="wrap">${i.pacote || "—"}</td>
       <td>${i.fornecedor || "—"}</td><td>${i.sc || "—"}</td><td>${i.status_engenharia || "—"}</td>
       <td><span class="chip ${chip.cls}">${chip.label}</span></td>
