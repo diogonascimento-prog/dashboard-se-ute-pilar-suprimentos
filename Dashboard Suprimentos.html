@@ -101,6 +101,8 @@
 
   table.data th, table.data td { text-align: left; padding: 9px 11px; font-size: 12.5px; border-bottom: 1px solid var(--border); white-space: nowrap; }
   table.data td.wrap { white-space: normal; max-width: 300px; }
+  table.data td.obs-cell { max-width: 220px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; }
+  table.data td.obs-cell.expanded { white-space: normal; overflow: visible; text-overflow: clip; max-width: 380px; }
   table.data th { color: var(--text-muted); font-weight: 700; font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.03em;
     cursor: pointer; user-select: none; position: sticky; top: 0; background: var(--surface-1); }
   table.data th:hover { color: var(--orange); }
@@ -188,57 +190,60 @@
     <button class="tab-btn" data-tab="tab-procurement">Demais SC</button>
   </div>
 
-  <!-- ============================= TAB 1: REVISÕES DE ENGENHARIA — EQUIPAMENTOS DE PÁTIO ============================= -->
+  <!-- ============================= TAB 1: EQUIPAMENTOS DE PÁTIO (filtro do Material Eletromecânico) ============================= -->
   <div class="tab-content active" id="tab-revisoes">
-    <div class="stat-row" id="stat-row-revisoes"></div>
-
-    <div class="panel">
-      <h2>Filtrar por equipamento</h2>
-      <div class="panel-sub">Selecione um equipamento para focar os gráficos e a tabela abaixo. Clique de novo (ou em "Todos") para limpar.</div>
-      <div class="equip-filter" id="equip-filter"></div>
+    <div class="panel" style="padding:12px 20px;">
+      <div class="panel-sub" style="margin:0;">Contrato fechado — mostra os 7 itens de pátio (disjuntor, chaves seccionadoras, TC, TP, para-raios) com o fornecedor final, SC e situação de entrega. É um recorte da aba <b>Material Eletromecânico</b>.</div>
     </div>
+    <div class="stat-row" id="stat-row-pt"></div>
 
     <div class="panel">
       <h2>Filtrar por obra</h2>
-      <div class="panel-sub">"Total" soma as duas obras. Combina com o filtro de equipamento acima.</div>
-      <div class="equip-filter" id="obra-filter"></div>
+      <div class="panel-sub">Combina com o filtro de situação abaixo. Clique de novo (ou em "Total") para limpar.</div>
+      <div class="equip-filter" id="pt-obra-filter"></div>
     </div>
 
     <div class="panel">
-      <h2>Visão gerencial</h2>
-      <div class="panel-sub" id="charts-sub">Todos os equipamentos · <span id="charts-count"></span> itens em cotação</div>
+      <h2>Filtrar por situação</h2>
+      <div class="panel-sub">Baseado na data de necessidade em obra x hoje.</div>
+      <div class="equip-filter" id="pt-situacao-filter"></div>
+    </div>
+
+    <div class="panel">
+      <h2>Visão gerencial — Equipamentos de Pátio</h2>
+      <div class="panel-sub" id="pt-charts-sub">Itens por obra (sem valores financeiros)</div>
       <div class="charts-grid">
         <div class="chart-box">
-          <div class="chart-title">Com quem está (situação atual)</div>
-          <div id="chart-holder" class="chart-body"></div>
-        </div>
-        <div class="chart-box">
-          <div class="chart-title">Equipamentos distintos por fornecedor</div>
-          <div id="chart-forn" class="chart-body"></div>
-        </div>
-        <div class="chart-box">
           <div class="chart-title">Itens por obra</div>
-          <div id="chart-obra" class="chart-body"></div>
+          <div class="chart-body" id="chart-pt-obra"></div>
+        </div>
+        <div class="chart-box">
+          <div class="chart-title">Itens por situação</div>
+          <div class="chart-body" id="chart-pt-situacao"></div>
+        </div>
+        <div class="chart-box">
+          <div class="chart-title">Itens por fase atual (pipeline)</div>
+          <div class="chart-body" id="chart-pt-fase"></div>
         </div>
       </div>
     </div>
 
     <div class="panel">
-      <h2>Detalhe por item</h2>
-      <div class="panel-sub" id="tempo-sub"></div>
+      <h2>Itens de pátio — cronograma de suprimentos</h2>
+      <div class="panel-sub" id="pt-table-sub">Clique nos cabeçalhos para ordenar. Linhas em vermelho: atrasado (passou da data de necessidade e não foi entregue).</div>
       <div class="table-scroll">
-        <table class="data" id="tempo-table">
+        <table class="data" id="patio-table">
           <thead><tr>
-            <th data-k="item">Item</th><th data-k="categoria_nome">Categoria</th><th data-k="fornecedor">Fornecedor</th>
-            <th data-k="qtd">Qtd. orçada</th><th data-k="empreendimento">Obra</th>
-            <th data-k="rev_atual">Rev.</th><th data-k="holder">Com quem</th>
-            <th data-k="dias">Dias na fase</th><th data-k="data_ref">Desde</th><th data-k="prazo">Prazo</th>
+            <th data-k="item">Item</th><th data-k="obra">Obra</th><th data-k="fornecedor">Fornecedor</th>
+            <th data-k="sc">SC</th><th data-k="status_engenharia">Status engenharia</th>
+            <th data-k="etapa_atual">Fase atual</th>
+            <th data-k="situacao">Situação</th><th data-k="dias">Dias p/ necessidade</th>
+            <th data-k="data_necessidade">Data necessidade</th><th data-k="observacao">Observação</th>
           </tr></thead>
           <tbody></tbody>
         </table>
       </div>
     </div>
-
   </div>
 
   <!-- ============================= TAB 2: EQUIPAMENTOS CURVA A ============================= -->
@@ -385,203 +390,167 @@ function statTile(s) {
   return el;
 }
 
-/* =========================== TAB 1: REVISÕES DE PROJETOS =========================== */
-function classifyHolder(status) {
-  if (!status) return { label: "Indefinido", cls: "chip-neutral" };
-  const s = status.toUpperCase();
-  if (s.includes("ENGETECNICA") || s.includes("ENGETÉCNICA") || s.includes("ENGENHARIA")) return { label: "Com nossa Engenharia", cls: "chip-eng" };
-  if (s.includes("FORNECEDOR")) return { label: "Com o Fornecedor", cls: "chip-forn" };
-  if (s.includes("APROVADO") || s.includes("CONCLU")) return { label: "Concluído", cls: "chip-done" };
-  if (s.includes("REPROVADO") || s.includes("NÃO CONFORME") || s.includes("NAO CONFORME")) return { label: "Reprovado", cls: "chip-late" };
-  return { label: status.trim(), cls: "chip-neutral" };
-}
-
-function latestEnvioPrazo(item) {
-  let prazo = null;
-  for (let n = 1; item[`envio${n}`]; n++) {
-    if (item[`envio${n}`].prazo) prazo = item[`envio${n}`].prazo;
-  }
-  return prazo;
-}
-const pcItems = RAW.precontrato.items.map(i => {
-  const holder = classifyHolder(i.status_atual);
-  return { ...i, holder: holder.label, holderCls: holder.cls, dias: i.dias, prazo: latestEnvioPrazo(i) };
-});
-const pcCategories = RAW.precontrato.categories;
-const pcFornecedores = [...new Set(pcItems.map(i => i.fornecedor))];
-
-/* ---- Short labels + colors per equipment category ---- */
-const CAT_SHORT = {
-  "4.1": "Disjuntor",
-  "4.2": "Chave DAL (s/ terra)",
-  "4.3": "Chave DAL (c/ terra)",
-  "4.4": "Chave AVR",
-  "4.5": "Transf. Corrente (TC)",
-  "4.6": "Transf. Potencial (TP)",
-  "4.7": "Para-raios",
-};
-const catShort = code => CAT_SHORT[code] || code;
-const catColor = code => PALETTE[pcCategories.findIndex(c => c.code === code) % PALETTE.length];
-const HOLDER_COLOR = {
-  "chip-eng": "var(--s1)", "chip-forn": "var(--status-warning)",
-  "chip-done": "var(--status-good)", "chip-late": "var(--status-critical)",
-  "chip-neutral": "var(--s9)",
-};
-const OBRA_COLOR = { "SE UTE PILAR": "var(--s1)", "SE RIO LARGO II": "var(--s2)" };
-
-/* ---- Filter state ---- */
-let equipFilter = null;           // null = todos, senão categoria_code
-let obraFilter = null;            // null = total (soma as duas obras), senão nome da obra
-let tempoSortKey = null, tempoSortDir = 1;
-
-const getFiltered = () => pcItems.filter(i =>
-  (equipFilter ? i.categoria_code === equipFilter : true) &&
-  (obraFilter ? i.empreendimento === obraFilter : true)
-);
-
-/* ---- Elements ---- */
-const statRowRevisoes = document.getElementById("stat-row-revisoes");
-const filterEl = document.getElementById("equip-filter");
-const obraFilterEl = document.getElementById("obra-filter");
-const tempoBody = document.querySelector("#tempo-table tbody");
-
-/* ---- KPI tiles (filter-aware) ---- */
-function renderStats(items) {
-  const comEng = items.filter(i => i.holderCls === "chip-eng").length;
-  const comForn = items.filter(i => i.holderCls === "chip-forn").length;
-  const atras = items.filter(i => i.dias != null && i.dias > LATE_THRESHOLD_DAYS).length;
-  const media = items.length ? (items.reduce((s,i) => s + (i.dias||0), 0) / items.length).toFixed(1) : "—";
-  const escopoParts = [equipFilter ? catShort(equipFilter) : "todos os equipamentos"];
-  if (obraFilter) escopoParts.push(obraFilter);
-  statRowRevisoes.innerHTML = "";
-  [
-    { label: "Itens em cotação", value: items.length, sub: escopoParts.join(" · ") },
-    { label: "Com nossa Engenharia", value: comEng, sub: "aguardando nossa análise" },
-    { label: "Com o Fornecedor", value: comForn, sub: "aguardando retorno deles" },
-    { label: `Parados > ${LATE_THRESHOLD_DAYS} dias`, value: atras, sub: "possível gargalo", alert: atras > 0 },
-    { label: "Tempo médio na fase", value: `${media}${media==="—"?"":"d"}`, sub: "itens filtrados" },
-  ].forEach(s => statRowRevisoes.appendChild(statTile(s)));
-}
-
-/* ---- Managerial charts (filter-aware) ---- */
+/* =========================== TAB 1: EQUIPAMENTOS DE PÁTIO (filtro do Material Eletromecânico) =========================== */
 function groupCount(items, keyFn) {
   const m = {};
   items.forEach(i => { const k = keyFn(i); if (k == null) return; m[k] = (m[k]||0) + 1; });
   return Object.entries(m).map(([label, value]) => ({ label, value }));
 }
-function renderCharts(items) {
-  // Com quem está
-  const holderData = groupCount(items, i => i.holder);
-  const holderClsByLabel = {}; items.forEach(i => holderClsByLabel[i.holder] = i.holderCls);
-  renderBarChart("chart-holder", holderData, lbl => HOLDER_COLOR[holderClsByLabel[lbl]] || "var(--s9)");
 
-  // Equipamentos distintos por fornecedor (conta categorias diferentes, não linhas/obras repetidas)
-  const fornCatMap = {};
-  items.forEach(i => { (fornCatMap[i.fornecedor] = fornCatMap[i.fornecedor] || new Set()).add(i.categoria_code); });
-  const fornData = Object.entries(fornCatMap).map(([label, set]) => ({ label, value: set.size }));
-  renderBarChart("chart-forn", fornData, lbl => { const idx = fornData.findIndex(d=>d.label===lbl); return PALETTE[idx % PALETTE.length]; });
+const PT_SITUACAO_ORDER = ["ATRASADO", "CRÍTICO", "ATENÇÃO", "EM PRAZO", "ENTREGUE"];
+const PT_FASE_ORDER = [
+  "1. COTAÇÃO", "2. OC / CONTRATO", "3. EMISSÃO DE PROJETO", "4. APROVAÇÃO DE PROJETO",
+  "5. FABRICAÇÃO", "6. INSPEÇÃO / TAF", "7. EMBARQUE", "8. ENTREGA EM OBRA", "CONCLUÍDO",
+];
+const PT_SITUACAO_CLS = {
+  "ATRASADO": "chip-sit-atrasado", "CRÍTICO": "chip-sit-critico", "ATENÇÃO": "chip-sit-atencao",
+  "EM PRAZO": "chip-sit-emprazo", "ENTREGUE": "chip-sit-entregue",
+};
+const PT_ROW_CLS = {
+  "ATRASADO": "sit-atrasado", "CRÍTICO": "sit-critico", "ATENÇÃO": "sit-atencao",
+  "EM PRAZO": "sit-emprazo", "ENTREGUE": "sit-entregue",
+};
+const PT_OBRA_COLOR = { "SE PILAR": "var(--s1)", "SE RIO LARGO II": "var(--s2)", "LT": "var(--s3)" };
+function ptSituacaoChip(s) { return { label: s || "—", cls: PT_SITUACAO_CLS[s] || "chip-neutral" }; }
 
-  // Itens por obra
-  const obraData = groupCount(items, i => i.empreendimento);
-  renderBarChart("chart-obra", obraData, lbl => OBRA_COLOR[lbl] || "var(--s9)");
+// itens de patio ja contratados (exclui os 4 trafos WEG, que ficam so no dashboard proprio da WEG)
+const ptItems = RAW.curvaa.rows.filter(i => i.pacote === "EQUIPAMENTOS DE PÁTIO 230kV" && !(i.item||"").startsWith("Trafos"));
+const PT_OBRAS = [...new Set(ptItems.map(i => i.obra))];
 
-  const escopoParts = [equipFilter ? catShort(equipFilter) : "Todos os equipamentos"];
-  if (obraFilter) escopoParts.push(obraFilter);
-  document.getElementById("charts-sub").innerHTML =
-    escopoParts.join(" · ") + ` · <span id="charts-count">${items.length}</span> itens`;
+let ptObraFilter = null, ptSituacaoFilter = null;
+let ptSortKey = null, ptSortDir = 1;
+const getPtFiltered = () => ptItems.filter(i =>
+  (ptObraFilter ? i.obra === ptObraFilter : true) &&
+  (ptSituacaoFilter ? i.situacao === ptSituacaoFilter : true)
+);
+
+const statRowPt = document.getElementById("stat-row-pt");
+function renderPtStats(items) {
+  statRowPt.innerHTML = "";
+  const atrasado = items.filter(i => i.situacao === "ATRASADO").length;
+  const critico = items.filter(i => i.situacao === "CRÍTICO").length;
+  const entregue = items.filter(i => i.situacao === "ENTREGUE").length;
+  const escopo = [];
+  if (ptObraFilter) escopo.push(ptObraFilter);
+  if (ptSituacaoFilter) escopo.push(ptSituacaoFilter);
+  [
+    { label: "Itens", value: items.length, sub: escopo.length ? escopo.join(" · ") : "todas as obras" },
+    { label: "Atrasados", value: atrasado, sub: "passou da data de necessidade", alert: atrasado > 0 },
+    { label: "Críticos", value: critico, sub: "faltam até 30 dias", alert: critico > 0 },
+    { label: "Entregues", value: entregue, sub: `de ${items.length}` },
+  ].forEach(s => statRowPt.appendChild(statTile(s)));
 }
 
-/* ---- Detail table (filter + sort aware) ---- */
-function renderTempoTable() {
-  const items = getFiltered();
-  const key = tempoSortKey, dir = tempoSortDir;
+function renderPtCharts(items) {
+  const obraData = groupCount(items, i => i.obra);
+  renderBarChart("chart-pt-obra", obraData, lbl => PT_OBRA_COLOR[lbl] || "var(--s9)");
+  const sitCounts = {};
+  items.forEach(i => { const k = i.situacao || "—"; sitCounts[k] = (sitCounts[k]||0) + 1; });
+  const sitData = PT_SITUACAO_ORDER.filter(k => sitCounts[k]).map(k => ({ label: k, value: sitCounts[k] }));
+  const SIT_BAR_COLOR = {
+    "ATRASADO": "var(--status-critical)", "CRÍTICO": "var(--status-serious)", "ATENÇÃO": "var(--status-warning)",
+    "EM PRAZO": "var(--status-good)", "ENTREGUE": "var(--s2)",
+  };
+  renderBarChart("chart-pt-situacao", sitData, lbl => SIT_BAR_COLOR[lbl] || "var(--s9)");
+
+  const faseCounts = {};
+  items.forEach(i => { const k = i.etapa_atual || "—"; faseCounts[k] = (faseCounts[k]||0) + 1; });
+  const faseData = PT_FASE_ORDER.filter(k => faseCounts[k]).map(k => ({ label: k, value: faseCounts[k] }));
+  renderBarChart("chart-pt-fase", faseData, lbl => PALETTE[PT_FASE_ORDER.indexOf(lbl) % PALETTE.length]);
+}
+
+const ptBody = document.querySelector("#patio-table tbody");
+function renderPtTable() {
+  const items = getPtFiltered();
+  const key = ptSortKey, dir = ptSortDir;
   const sorted = [...items].sort((a,b) => {
-    if (!key) return (b.dias||0) - (a.dias||0);
+    if (!key) return (a.dias ?? 9999) - (b.dias ?? 9999);
     let av = a[key], bv = b[key];
     if (typeof av === "string") av = av.toLowerCase();
     if (typeof bv === "string") bv = bv.toLowerCase();
-    if (av == null) av = -Infinity;
-    if (bv == null) bv = -Infinity;
-    return av > bv ? dir : av < bv ? -dir : 0;
+    if (av == null) return 1;
+    if (bv == null) return -1;
+    if (av < bv) return -1 * dir;
+    if (av > bv) return 1 * dir;
+    return 0;
   });
-  tempoBody.innerHTML = "";
+  ptBody.innerHTML = "";
   sorted.forEach(i => {
+    const chip = ptSituacaoChip(i.situacao);
     const tr = document.createElement("tr");
-    if (i.dias != null && i.dias > LATE_THRESHOLD_DAYS) tr.className = "late";
-    tr.innerHTML = `<td>${i.item}</td><td class="wrap">${i.categoria_nome}</td><td>${i.fornecedor}</td>
-      <td class="num">${i.qtd ?? "—"}</td><td>${i.empreendimento || "—"}</td>
-      <td>${i.rev_atual||"—"}</td>
-      <td><span class="chip ${i.holderCls}">${i.holder}</span></td>
-      <td class="num">${i.dias ?? "—"}</td><td>${fmtDate(i.data_referencia_status)}</td>
-      <td>${fmtDate(i.prazo)}</td>`;
-    tempoBody.appendChild(tr);
+    tr.className = PT_ROW_CLS[i.situacao] || "";
+    tr.innerHTML = `<td class="wrap">${i.item || "—"}</td><td>${i.obra || "—"}</td>
+      <td>${i.fornecedor || "—"}</td><td>${i.sc || "—"}</td><td>${i.status_engenharia || "—"}</td>
+      <td>${i.etapa_atual || "—"}</td>
+      <td><span class="chip ${chip.cls}">${chip.label}</span></td>
+      <td class="num">${i.dias ?? "—"}</td><td>${fmtDate(i.data_necessidade)}</td>
+      <td class="obs-cell" title="Clique para expandir">${i.observacao || "—"}</td>`;
+    ptBody.appendChild(tr);
   });
-  const escopoParts = [];
-  if (equipFilter) escopoParts.push(catShort(equipFilter));
-  if (obraFilter) escopoParts.push(obraFilter);
-  document.getElementById("tempo-sub").textContent =
-    `${sorted.length} ${sorted.length===1?"item":"itens"}` + (escopoParts.length ? ` · ${escopoParts.join(" · ")}` : " · todos os equipamentos, todas as obras");
+  const escopo = [];
+  if (ptObraFilter) escopo.push(ptObraFilter);
+  if (ptSituacaoFilter) escopo.push(ptSituacaoFilter);
+  document.getElementById("pt-table-sub").textContent =
+    `${sorted.length} ${sorted.length===1?"item":"itens"}` + (escopo.length ? ` · ${escopo.join(" · ")}` : " · todas as obras, todas as situações") +
+    " — clique nos cabeçalhos para ordenar. Linhas em vermelho: atrasado.";
 }
-
-/* ---- Filter chips (equipamento) ---- */
-function renderFilterChips() {
-  filterEl.innerHTML = "";
-  const baseItems = obraFilter ? pcItems.filter(i => i.empreendimento === obraFilter) : pcItems;
-  const mkChip = (code, label, count, isLate) => {
-    const b = document.createElement("button");
-    b.className = "filter-chip" + (equipFilter === code ? " active" : "") + (isLate ? " alert" : "");
-    b.innerHTML = `${isLate && equipFilter!==code ? '<span class="fc-dot"></span>' : ""}${label}<span class="fc-count">${count}</span>`;
-    b.addEventListener("click", () => { equipFilter = (equipFilter === code) ? null : code; refresh(); });
-    filterEl.appendChild(b);
-  };
-  mkChip(null, "Todos", baseItems.length, false);
-  pcCategories.forEach(cat => {
-    const items = baseItems.filter(i => i.categoria_code === cat.code);
-    const isLate = items.some(i => i.dias != null && i.dias > LATE_THRESHOLD_DAYS);
-    mkChip(cat.code, catShort(cat.code), items.length, isLate);
-  });
-}
-
-/* ---- Filter chips (obra) ---- */
-const OBRAS = [...new Set(pcItems.map(i => i.empreendimento))];
-function renderObraFilterChips() {
-  obraFilterEl.innerHTML = "";
-  const baseItems = equipFilter ? pcItems.filter(i => i.categoria_code === equipFilter) : pcItems;
-  const mkChip = (obra, label, count, isLate) => {
-    const b = document.createElement("button");
-    b.className = "filter-chip" + (obraFilter === obra ? " active" : "") + (isLate ? " alert" : "");
-    b.innerHTML = `${isLate && obraFilter!==obra ? '<span class="fc-dot"></span>' : ""}${label}<span class="fc-count">${count}</span>`;
-    b.addEventListener("click", () => { obraFilter = (obraFilter === obra) ? null : obra; refresh(); });
-    obraFilterEl.appendChild(b);
-  };
-  mkChip(null, "Total", baseItems.length, false);
-  OBRAS.forEach(obra => {
-    const items = baseItems.filter(i => i.empreendimento === obra);
-    const isLate = items.some(i => i.dias != null && i.dias > LATE_THRESHOLD_DAYS);
-    mkChip(obra, obra, items.length, isLate);
-  });
-}
-
-/* ---- Master refresh ---- */
-function refresh() {
-  const items = getFiltered();
-  renderFilterChips();
-  renderObraFilterChips();
-  renderStats(items);
-  renderCharts(items);
-  renderTempoTable();
-}
-
-document.querySelectorAll("#tempo-table th[data-k]").forEach(th => {
+document.querySelectorAll("#patio-table th[data-k]").forEach(th => {
   th.addEventListener("click", () => {
-    const k = th.dataset.k;
-    tempoSortDir = (tempoSortKey === k) ? -tempoSortDir : 1;
-    tempoSortKey = k;
-    renderTempoTable();
+    ptSortDir = (ptSortKey === th.dataset.k) ? -ptSortDir : 1;
+    ptSortKey = th.dataset.k;
+    renderPtTable();
   });
 });
 
-refresh();
+const ptObraFilterEl = document.getElementById("pt-obra-filter");
+function renderPtObraFilterChips() {
+  ptObraFilterEl.innerHTML = "";
+  const baseItems = ptSituacaoFilter ? ptItems.filter(i => i.situacao === ptSituacaoFilter) : ptItems;
+  const mkChip = (obra, label, count) => {
+    const b = document.createElement("button");
+    b.className = "filter-chip" + (ptObraFilter === obra ? " active" : "");
+    b.innerHTML = `${label}<span class="fc-count">${count}</span>`;
+    b.addEventListener("click", () => { ptObraFilter = (ptObraFilter === obra) ? null : obra; refreshPt(); });
+    ptObraFilterEl.appendChild(b);
+  };
+  mkChip(null, "Total", baseItems.length);
+  PT_OBRAS.forEach(obra => mkChip(obra, obra, baseItems.filter(i => i.obra === obra).length));
+}
+
+const ptSituacaoFilterEl = document.getElementById("pt-situacao-filter");
+function renderPtSituacaoFilterChips() {
+  ptSituacaoFilterEl.innerHTML = "";
+  const baseItems = ptObraFilter ? ptItems.filter(i => i.obra === ptObraFilter) : ptItems;
+  const mkChip = (sit, label, count, isLate) => {
+    const b = document.createElement("button");
+    b.className = "filter-chip" + (ptSituacaoFilter === sit ? " active" : "") + (isLate ? " alert" : "");
+    b.innerHTML = `${isLate && ptSituacaoFilter!==sit ? '<span class="fc-dot"></span>' : ""}${label}<span class="fc-count">${count}</span>`;
+    b.addEventListener("click", () => { ptSituacaoFilter = (ptSituacaoFilter === sit) ? null : sit; refreshPt(); });
+    ptSituacaoFilterEl.appendChild(b);
+  };
+  mkChip(null, "Todas", baseItems.length, false);
+  PT_SITUACAO_ORDER.forEach(sit => {
+    const items = baseItems.filter(i => i.situacao === sit);
+    if (!items.length) return;
+    mkChip(sit, sit, items.length, sit === "ATRASADO");
+  });
+}
+
+function refreshPt() {
+  const items = getPtFiltered();
+  renderPtObraFilterChips();
+  renderPtSituacaoFilterChips();
+  renderPtStats(items);
+  renderPtCharts(items);
+  renderPtTable();
+}
+refreshPt();
+
+/* Observação: célula clicável, expande/recolhe sem desalinhar a tabela (delegado — cobre as 3 tabelas) */
+document.addEventListener("click", e => {
+  const td = e.target.closest(".obs-cell");
+  if (td) td.classList.toggle("expanded");
+});
 
 /* =========================== TAB 2: EQUIPAMENTOS CURVA A =========================== */
 const CA_SITUACAO_ORDER = ["ATRASADO", "CRÍTICO", "ATENÇÃO", "EM PRAZO", "ENTREGUE"];
@@ -671,7 +640,7 @@ function renderCaTable() {
       <td>${i.etapa_atual || "—"}</td>
       <td><span class="chip ${chip.cls}">${chip.label}</span></td>
       <td class="num">${i.dias ?? "—"}</td><td>${fmtDate(i.data_necessidade)}</td>
-      <td class="wrap">${i.observacao || "—"}</td>`;
+      <td class="obs-cell" title="Clique para expandir">${i.observacao || "—"}</td>`;
     caBody.appendChild(tr);
   });
   const escopo = [];
@@ -882,7 +851,7 @@ function renderProcTable(items) {
       <td>${r.oc ?? "—"}</td>
       <td class="num">${r.diasAberto ?? "—"}</td>
       <td class="num">${r.diasPrazo ?? "—"}</td>
-      <td class="wrap">${r.observacao || "—"}</td>`;
+      <td class="obs-cell" title="Clique para expandir">${r.observacao || "—"}</td>`;
     procBody.appendChild(tr);
   });
   const escopo = [];

@@ -63,6 +63,10 @@
  .sp.forn{background:rgba(217,148,0,.16);color:var(--amber)}
  .sp.atr{background:rgba(207,58,78,.15);color:var(--red)}
  .sp.sem{background:var(--surface-2);color:var(--muted);border:1px solid var(--border)}
+ .sp.critico{background:rgba(226,87,28,.16);color:var(--orange)}
+ .sp.atencao{background:rgba(217,148,0,.16);color:var(--amber)}
+ .sp.emprazo{background:rgba(42,157,87,.15);color:var(--green)}
+ .sp.entregue{background:rgba(47,109,240,.14);color:var(--blue)}
 
  .bar-row{display:grid;grid-template-columns:180px 1fr 42px;align-items:center;gap:12px;margin-bottom:11px}
  .bar-row .bname{font-size:12.5px;color:var(--ink);font-weight:600}
@@ -131,42 +135,21 @@
 
  <div class="tabs" id="tabs">
    <button class="tab on" data-t="geral">Visão Geral</button>
-   <button class="tab" data-t="documentos">Documentos</button>
-   <button class="tab" data-t="transformadores">Transformadores</button>
+   <button class="tab" data-t="transformadores">Marcos Contratuais</button>
  </div>
 
  <!-- ===================== TAB 1: VISÃO GERAL ===================== -->
  <div class="panel on" data-p="geral">
    <div class="kpis" id="stat-row-weg"></div>
 
-   <div class="card">
-     <h3>Documentos por status</h3>
-     <p class="cap">Situação atual dos 16 documentos de engenharia, compartilhados pelos 4 transformadores</p>
-     <div id="chart-doc-status"></div>
-   </div>
-
    <div class="card" style="box-shadow:none;border:none;padding:0;background:none;">
-     <div class="panelhead"><div class="t">Pipeline de fabricação — 4 transformadores</div></div>
-     <p class="cap" style="margin:-8px 0 14px;">Engenharia &rarr; Fabricação &rarr; TAF &rarr; Envio à obra &rarr; Entrega em obra &rarr; Montagem &rarr; Comissionamento</p>
+     <div class="panelhead"><div class="t">Pipeline de suprimento — 4 transformadores</div></div>
+     <p class="cap" style="margin:-8px 0 14px;">1. Cotação &rarr; 2. OC/Contrato &rarr; 3. Emissão de Projeto &rarr; 4. Aprovação de Projeto &rarr; 5. Fabricação &rarr; 6. Inspeção/TAF &rarr; 7. Embarque &rarr; 8. Entrega em Obra</p>
      <div id="weg-transformadores"></div>
    </div>
  </div>
 
- <!-- ===================== TAB 2: DOCUMENTOS ===================== -->
- <div class="panel" data-p="documentos">
-   <div class="card">
-     <h3>Documentos de projeto — Engenharia</h3>
-     <p class="cap" id="weg-sub"></p>
-     <div class="table-scroll">
-       <table class="tbl" id="weg-table">
-         <thead><tr><th>Documento</th><th>Rev. atual</th><th>Nº revisões</th><th>Status</th><th>Dias na fase</th><th>Comentários</th></tr></thead>
-         <tbody></tbody>
-       </table>
-     </div>
-   </div>
- </div>
-
- <!-- ===================== TAB 3: TRANSFORMADORES (detalhe contratual) ===================== -->
+ <!-- ===================== TAB 2: MARCOS CONTRATUAIS ===================== -->
  <div class="panel" data-p="transformadores">
    <div class="card">
      <h3>Marcos gerais do contrato</h3>
@@ -182,7 +165,7 @@
 </div>
 
 <script>
-const RAW = {"weg": {"projetos": [{"descricao": "Lista de Documentos", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "DesenvolvimentoWEG", "dias": 22, "revisoes": 1}, {"descricao": "CADERNO DE BUCHAS", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "DesenvolvimentoWEG", "dias": 22, "revisoes": 1}, {"descricao": "CADERNO DE CONECTORES DE BUCHAS", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "DesenvolvimentoWEG", "dias": 22, "revisoes": 1}, {"descricao": "FOLHA DE DADOS", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "DesenvolvimentoWEG", "dias": 22, "revisoes": 1}, {"descricao": "DESCRITIVOS DE PINTURA", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "DesenvolvimentoWEG", "dias": 22, "revisoes": 1}, {"descricao": "DIAGRAMA DOS EQUIPAMENTOS AUXILIARES", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "DesenvolvimentoWEG", "dias": 22, "revisoes": 1}, {"descricao": "DIMENSÕES EXTERNAS", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "DesenvolvimentoWEG", "dias": 22, "revisoes": 1}, {"descricao": "DIMENSÕES DE TRANSPORTE", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "DesenvolvimentoWEG", "dias": 22, "revisoes": 1}, {"descricao": "PLACA DE IDENTIFICAÇÃO", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "DesenvolvimentoWEG", "dias": 22, "revisoes": 1}, {"descricao": "PLANO DE INSPEÇÃO E CONTROLE DE QUALIDADE", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "DesenvolvimentoWEG", "dias": 22, "revisoes": 1}, {"descricao": "MOTOVENTILADOR", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "DesenvolvimentoWEG", "dias": 22, "revisoes": 1}, {"descricao": "SENSOR DE TEMPERATURA DO ÓLEO (PT100)", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "DesenvolvimentoWEG", "dias": 22, "revisoes": 1}, {"descricao": "CATÁLOGOS DE COMPONENTES", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "DesenvolvimentoWEG", "dias": 22, "revisoes": 1}, {"descricao": "MANUAIS DE COMPONENTES", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "DesenvolvimentoWEG", "dias": 22, "revisoes": 1}, {"descricao": "MANUAL DE INSTRUÇÃO E OPERAÇÃO DO EQUIPAMENTO", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "DesenvolvimentoWEG", "dias": 22, "revisoes": 1}, {"descricao": "DESIGN REVIEW", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "DesenvolvimentoWEG", "dias": 22, "revisoes": 1}], "transformadores": {"TR1": [{"descricao": "Engenharia", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "DesenvolvimentoWEG", "dias": 22, "revisoes": 1}, {"descricao": "Fabricação", "comentarios": null, "rev": null, "status": null, "dias": null, "revisoes": 0}, {"descricao": "TAF", "comentarios": null, "rev": null, "status": null, "dias": null, "revisoes": 0}, {"descricao": "Envio a obra", "comentarios": null, "rev": null, "status": null, "dias": null, "revisoes": 0}, {"descricao": "Entrega a obra", "comentarios": null, "rev": null, "status": null, "dias": null, "revisoes": 0}, {"descricao": "Montagem", "comentarios": null, "rev": null, "status": null, "dias": null, "revisoes": 0}, {"descricao": "Comissionamento", "comentarios": null, "rev": null, "status": null, "dias": null, "revisoes": 0}], "TR2": [{"descricao": "Engenharia", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "DesenvolvimentoWEG", "dias": 22, "revisoes": 1}, {"descricao": "Fabricação", "comentarios": null, "rev": null, "status": null, "dias": null, "revisoes": 0}, {"descricao": "TAF", "comentarios": null, "rev": null, "status": null, "dias": null, "revisoes": 0}, {"descricao": "Envio a obra", "comentarios": null, "rev": null, "status": null, "dias": null, "revisoes": 0}, {"descricao": "Entrega a obra", "comentarios": null, "rev": null, "status": null, "dias": null, "revisoes": 0}, {"descricao": "Montagem", "comentarios": null, "rev": null, "status": null, "dias": null, "revisoes": 0}, {"descricao": "Comissionamento", "comentarios": null, "rev": null, "status": null, "dias": null, "revisoes": 0}], "TR3": [{"descricao": "Engenharia", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "DesenvolvimentoWEG", "dias": 22, "revisoes": 1}, {"descricao": "Fabricação", "comentarios": null, "rev": null, "status": null, "dias": null, "revisoes": 0}, {"descricao": "TAF", "comentarios": null, "rev": null, "status": null, "dias": null, "revisoes": 0}, {"descricao": "Envio a obra", "comentarios": null, "rev": null, "status": null, "dias": null, "revisoes": 0}, {"descricao": "Entrega a obra", "comentarios": null, "rev": null, "status": null, "dias": null, "revisoes": 0}, {"descricao": "Montagem", "comentarios": null, "rev": null, "status": null, "dias": null, "revisoes": 0}, {"descricao": "Comissionamento", "comentarios": null, "rev": null, "status": null, "dias": null, "revisoes": 0}], "TR4": [{"descricao": "Engenharia", "comentarios": "EQP - Equipamento", "rev": "0A", "status": "DesenvolvimentoWEG", "dias": 22, "revisoes": 1}, {"descricao": "Fabricação", "comentarios": null, "rev": null, "status": null, "dias": null, "revisoes": 0}, {"descricao": "TAF", "comentarios": null, "rev": null, "status": null, "dias": null, "revisoes": 0}, {"descricao": "Envio a obra", "comentarios": null, "rev": null, "status": null, "dias": null, "revisoes": 0}, {"descricao": "Entrega a obra", "comentarios": null, "rev": null, "status": null, "dias": null, "revisoes": 0}, {"descricao": "Montagem", "comentarios": null, "rev": null, "status": null, "dias": null, "revisoes": 0}, {"descricao": "Comissionamento", "comentarios": null, "rev": null, "status": null, "dias": null, "revisoes": 0}]}}, "marcos": [{"marco": "Assinatura do Contrato", "transformador": "Compartilhado", "data_inicio": "2026-05-11T03:00:00", "data_fim": "2026-05-11T03:00:00", "status": "Concluído"}, {"marco": "Aprovação dos Desenhos", "transformador": "Compartilhado", "data_inicio": "2026-07-22T03:00:00", "data_fim": "2026-08-11T03:00:00", "status": "Em andamento"}, {"marco": "Bobinas", "transformador": "Transformador 1", "data_inicio": "2027-04-21T03:00:00", "data_fim": "2027-06-11T03:00:00", "status": "Não iniciado"}, {"marco": "Núcleo", "transformador": "Transformador 1", "data_inicio": "2027-05-06T03:00:00", "data_fim": "2027-06-11T03:00:00", "status": "Não iniciado"}, {"marco": "Ensaios, Inspeção e Relatórios", "transformador": "Transformador 1", "data_inicio": "2027-08-24T03:00:00", "data_fim": "2027-09-28T03:00:00", "status": "Não iniciado"}, {"marco": "Transporte até Pilar/AL", "transformador": "Transformador 1", "data_inicio": "2027-11-18T03:00:00", "data_fim": "2027-12-08T03:00:00", "status": "Não iniciado"}, {"marco": "Bobinas", "transformador": "Transformador 2", "data_inicio": "2027-04-26T03:00:00", "data_fim": "2027-06-16T03:00:00", "status": "Não iniciado"}, {"marco": "Núcleo", "transformador": "Transformador 2", "data_inicio": "2027-05-11T03:00:00", "data_fim": "2027-06-16T03:00:00", "status": "Não iniciado"}, {"marco": "Ensaios, Inspeção e Relatórios", "transformador": "Transformador 2", "data_inicio": "2027-08-27T03:00:00", "data_fim": "2027-09-30T03:00:00", "status": "Não iniciado"}, {"marco": "Transporte até Pilar/AL", "transformador": "Transformador 2", "data_inicio": "2027-11-19T03:00:00", "data_fim": "2027-12-09T03:00:00", "status": "Não iniciado"}, {"marco": "Bobinas", "transformador": "Transformador 3", "data_inicio": "2027-04-26T03:00:00", "data_fim": "2027-06-16T03:00:00", "status": "Não iniciado"}, {"marco": "Núcleo", "transformador": "Transformador 3", "data_inicio": "2027-05-11T03:00:00", "data_fim": "2027-06-16T03:00:00", "status": "Não iniciado"}, {"marco": "Ensaios, Inspeção e Relatórios", "transformador": "Transformador 3", "data_inicio": "2027-08-30T03:00:00", "data_fim": "2027-09-30T03:00:00", "status": "Não iniciado"}, {"marco": "Transporte até Pilar/AL", "transformador": "Transformador 3", "data_inicio": "2027-11-23T03:00:00", "data_fim": "2027-12-13T03:00:00", "status": "Não iniciado"}, {"marco": "Bobinas", "transformador": "Transformador 4", "data_inicio": "2027-04-27T03:00:00", "data_fim": "2027-06-17T03:00:00", "status": "Não iniciado"}, {"marco": "Núcleo", "transformador": "Transformador 4", "data_inicio": "2027-05-12T03:00:00", "data_fim": "2027-06-17T03:00:00", "status": "Não iniciado"}, {"marco": "Ensaios, Inspeção e Relatórios", "transformador": "Transformador 4", "data_inicio": "2027-08-30T03:00:00", "data_fim": "2027-10-01T03:00:00", "status": "Não iniciado"}, {"marco": "Transporte até Pilar/AL", "transformador": "Transformador 4", "data_inicio": "2027-11-24T03:00:00", "data_fim": "2027-12-14T03:00:00", "status": "Não iniciado"}, {"marco": "Entrega do 1º equipamento na obra", "transformador": "Geral", "data_inicio": null, "data_fim": "2027-12-14T03:00:00", "status": "Não iniciado"}, {"marco": "Data Contratual de Aceitação Provisória", "transformador": "Geral", "data_inicio": null, "data_fim": "2028-02-20T03:00:00", "status": "Não iniciado"}]};
+const RAW = {"trafos": [{"item": "Trafos - 150-2600220-1C", "obra": "SE PILAR", "pacote": "EQUIPAMENTOS DE PÁTIO 230kV", "fornecedor": "WEG", "oc": null, "status_engenharia": "LIBERADO PARA COMPRA", "sc": null, "etapa_atual": "5. FABRICAÇÃO", "status_fornecimento": "FABRICAÇÃO", "data_necessidade": "2027-12-08T00:00:00", "dias": 448, "situacao": "EM PRAZO", "observacao": "Design Review foi  10/09/2026 ; Emissão final de projetos dia 18/09/2026"}, {"item": "Trafos - 150-2600220-2C", "obra": "SE PILAR", "pacote": "EQUIPAMENTOS DE PÁTIO 230kV", "fornecedor": "WEG", "oc": null, "status_engenharia": "LIBERADO PARA COMPRA", "sc": null, "etapa_atual": "5. FABRICAÇÃO", "status_fornecimento": "FABRICAÇÃO", "data_necessidade": "2027-12-09T00:00:00", "dias": 449, "situacao": "EM PRAZO", "observacao": "Design Review foi  10/09/2026 ; Emissão final de projetos dia 18/09/2026"}, {"item": "Trafos - 150-2600220-3C", "obra": "SE PILAR", "pacote": "EQUIPAMENTOS DE PÁTIO 230kV", "fornecedor": "WEG", "oc": null, "status_engenharia": "LIBERADO PARA COMPRA", "sc": null, "etapa_atual": "5. FABRICAÇÃO", "status_fornecimento": "FABRICAÇÃO", "data_necessidade": "2027-12-13T00:00:00", "dias": 453, "situacao": "EM PRAZO", "observacao": "Design Review foi  10/09/2026 ; Emissão final de projetos dia 18/09/2026"}, {"item": "Trafos - 150-2600220-4C", "obra": "SE PILAR", "pacote": "EQUIPAMENTOS DE PÁTIO 230kV", "fornecedor": "WEG", "oc": null, "status_engenharia": "LIBERADO PARA COMPRA", "sc": null, "etapa_atual": "5. FABRICAÇÃO", "status_fornecimento": "FABRICAÇÃO", "data_necessidade": "2027-12-14T00:00:00", "dias": 454, "situacao": "EM PRAZO", "observacao": "Design Review foi  10/09/2026 ; Emissão final de projetos dia 18/09/2026"}], "marcos": [{"marco": "Assinatura do Contrato", "transformador": "Compartilhado", "data_inicio": "2026-05-11T03:00:00", "data_fim": "2026-05-11T03:00:00", "status": "Concluído"}, {"marco": "Aprovação dos Desenhos", "transformador": "Compartilhado", "data_inicio": "2026-07-22T03:00:00", "data_fim": "2026-08-11T03:00:00", "status": "Em andamento"}, {"marco": "Bobinas", "transformador": "Transformador 1", "data_inicio": "2027-04-21T03:00:00", "data_fim": "2027-06-11T03:00:00", "status": "Não iniciado"}, {"marco": "Núcleo", "transformador": "Transformador 1", "data_inicio": "2027-05-06T03:00:00", "data_fim": "2027-06-11T03:00:00", "status": "Não iniciado"}, {"marco": "Ensaios, Inspeção e Relatórios", "transformador": "Transformador 1", "data_inicio": "2027-08-24T03:00:00", "data_fim": "2027-09-28T03:00:00", "status": "Não iniciado"}, {"marco": "Transporte até Pilar/AL", "transformador": "Transformador 1", "data_inicio": "2027-11-18T03:00:00", "data_fim": "2027-12-08T03:00:00", "status": "Não iniciado"}, {"marco": "Bobinas", "transformador": "Transformador 2", "data_inicio": "2027-04-26T03:00:00", "data_fim": "2027-06-16T03:00:00", "status": "Não iniciado"}, {"marco": "Núcleo", "transformador": "Transformador 2", "data_inicio": "2027-05-11T03:00:00", "data_fim": "2027-06-16T03:00:00", "status": "Não iniciado"}, {"marco": "Ensaios, Inspeção e Relatórios", "transformador": "Transformador 2", "data_inicio": "2027-08-27T03:00:00", "data_fim": "2027-09-30T03:00:00", "status": "Não iniciado"}, {"marco": "Transporte até Pilar/AL", "transformador": "Transformador 2", "data_inicio": "2027-11-19T03:00:00", "data_fim": "2027-12-09T03:00:00", "status": "Não iniciado"}, {"marco": "Bobinas", "transformador": "Transformador 3", "data_inicio": "2027-04-26T03:00:00", "data_fim": "2027-06-16T03:00:00", "status": "Não iniciado"}, {"marco": "Núcleo", "transformador": "Transformador 3", "data_inicio": "2027-05-11T03:00:00", "data_fim": "2027-06-16T03:00:00", "status": "Não iniciado"}, {"marco": "Ensaios, Inspeção e Relatórios", "transformador": "Transformador 3", "data_inicio": "2027-08-30T03:00:00", "data_fim": "2027-09-30T03:00:00", "status": "Não iniciado"}, {"marco": "Transporte até Pilar/AL", "transformador": "Transformador 3", "data_inicio": "2027-11-23T03:00:00", "data_fim": "2027-12-13T03:00:00", "status": "Não iniciado"}, {"marco": "Bobinas", "transformador": "Transformador 4", "data_inicio": "2027-04-27T03:00:00", "data_fim": "2027-06-17T03:00:00", "status": "Não iniciado"}, {"marco": "Núcleo", "transformador": "Transformador 4", "data_inicio": "2027-05-12T03:00:00", "data_fim": "2027-06-17T03:00:00", "status": "Não iniciado"}, {"marco": "Ensaios, Inspeção e Relatórios", "transformador": "Transformador 4", "data_inicio": "2027-08-30T03:00:00", "data_fim": "2027-10-01T03:00:00", "status": "Não iniciado"}, {"marco": "Transporte até Pilar/AL", "transformador": "Transformador 4", "data_inicio": "2027-11-24T03:00:00", "data_fim": "2027-12-14T03:00:00", "status": "Não iniciado"}, {"marco": "Entrega do 1º equipamento na obra", "transformador": "Geral", "data_inicio": null, "data_fim": "2027-12-14T03:00:00", "status": "Não iniciado"}, {"marco": "Data Contratual de Aceitação Provisória", "transformador": "Geral", "data_inicio": null, "data_fim": "2028-02-20T03:00:00", "status": "Não iniciado"}]};
 const NOW = new Date();
 document.getElementById("updated-date").textContent = NOW.toLocaleDateString("pt-BR");
 
@@ -220,93 +203,71 @@ function renderBarChart(containerId, groups) {
   });
 }
 
-const STAGES = ["Engenharia","Fabricação","TAF","Envio a obra","Entrega a obra","Montagem","Comissionamento"];
-function wegStatusChip(status) {
-  if (!status) return { label: "Não iniciado", cls: "sem" };
-  const s = String(status).toUpperCase();
-  if (s.includes("REPROVADO") || s.includes("NAO CONFORME") || s.includes("NÃO CONFORME")) return { label: "Reprovado", cls: "atr" };
-  if (s.includes("APROVADO") || s.includes("CONCLU")) return { label: "Concluído", cls: "done" };
-  if (s.includes("DESENVOLVIMENTO")) return { label: "Em desenvolvimento (WEG)", cls: "forn" };
-  if (s.includes("ANALISE") || s.includes("ANÁLISE")) return { label: "Em análise (Engetécnica)", cls: "andamento" };
-  return { label: status, cls: "sem" };
-}
-
-const wegProjetos = RAW.weg.projetos;
-const wegTransf = RAW.weg.transformadores;
-const TR_CODES = ["TR1","TR2","TR3","TR4"];
+const STAGES = ["1. COTAÇÃO","2. OC / CONTRATO","3. EMISSÃO DE PROJETO","4. APROVAÇÃO DE PROJETO","5. FABRICAÇÃO","6. INSPEÇÃO / TAF","7. EMBARQUE","8. ENTREGA EM OBRA"];
+const STAGE_SHORT = ["1. Cotação","2. OC/Contrato","3. Emissão Projeto","4. Aprovação Projeto","5. Fabricação","6. Inspeção/TAF","7. Embarque","8. Entrega em Obra"];
 const TR_COLORS = ["var(--blue)","var(--green)","var(--purple)","var(--teal)"];
 
-const wegReprovados = wegProjetos.filter(p => String(p.status||"").toUpperCase().includes("REPROVADO")).length;
-const wegConcluidos = wegProjetos.filter(p => /APROVADO|CONCLU/.test(String(p.status||"").toUpperCase())).length;
-const wegEmFabricacao = TR_CODES.filter(code => {
-  const rows = wegTransf[code] || [];
-  let idx = 0;
-  rows.forEach((r,i) => { if (r.status) idx = i; });
-  return idx >= 1;
-}).length;
+function situacaoChip(s) {
+  const map = {
+    "ATRASADO": { label: "Atrasado", cls: "atr" },
+    "CRÍTICO": { label: "Crítico", cls: "critico" },
+    "ATENÇÃO": { label: "Atenção", cls: "atencao" },
+    "EM PRAZO": { label: "Em prazo", cls: "emprazo" },
+    "ENTREGUE": { label: "Entregue", cls: "entregue" },
+  };
+  return map[s] || { label: s || "—", cls: "sem" };
+}
+
+// item vem como "Trafos - 150-2600220-1C".."4C" - ordena TR1..TR4 pelo sufixo
+function trIndex(item) {
+  const m = /(\d)C\s*$/.exec(item || "");
+  return m ? parseInt(m[1], 10) - 1 : 0;
+}
+const trafos = [...(RAW.trafos || [])].sort((a, b) => trIndex(a.item) - trIndex(b.item));
+
+const atrasados = trafos.filter(t => t.situacao === "ATRASADO").length;
+const criticos = trafos.filter(t => t.situacao === "CRÍTICO").length;
+const entregues = trafos.filter(t => t.situacao === "ENTREGUE").length;
 
 /* ---------------- TAB 1: Visão Geral ---------------- */
 const statRowWeg = document.getElementById("stat-row-weg");
 [
-  { label: "Documentos de projeto", value: wegProjetos.length, sub: "compartilhados entre os 4 transformadores", k: "var(--blue)" },
-  { label: "Aprovados", value: wegConcluidos, sub: `de ${wegProjetos.length}`, k: "var(--green)" },
-  { label: "Reprovados / pendentes", value: wegReprovados, sub: "precisam de nova revisão", alert: wegReprovados > 0, k: "var(--red)" },
-  { label: "Transformadores em fabricação", value: wegEmFabricacao, sub: "de 4 (fase além de Engenharia)", k: "var(--orange)" },
+  { label: "Transformadores", value: trafos.length, sub: "fornecedor WEG", k: "var(--blue)" },
+  { label: "Atrasados", value: atrasados, sub: "passou da data de necessidade", alert: atrasados > 0, k: "var(--red)" },
+  { label: "Críticos", value: criticos, sub: "faltam até 30 dias", alert: criticos > 0, k: "var(--orange)" },
+  { label: "Entregues", value: entregues, sub: `de ${trafos.length}`, k: "var(--green)" },
 ].forEach(s => statRowWeg.appendChild(kpiTile(s)));
 
-const statusGroups = {};
-wegProjetos.forEach(d => {
-  const label = wegStatusChip(d.status).label;
-  statusGroups[label] = (statusGroups[label] || 0) + 1;
-});
-renderBarChart("chart-doc-status", Object.entries(statusGroups).map(([label, count]) => ({ label, count })).sort((a,b) => b.count - a.count));
-
 const wegTransfWrap = document.getElementById("weg-transformadores");
-TR_CODES.forEach((code, idx) => {
-  const rows = wegTransf[code] || [];
-  let currentIdx = 0;
-  rows.forEach((r, i) => { if (r.status) currentIdx = i; });
-  const cur = rows[currentIdx] || {};
-  const chip = wegStatusChip(cur.status);
+trafos.forEach((t, idx) => {
+  const isDone = t.etapa_atual === "CONCLUÍDO" || t.situacao === "ENTREGUE";
+  const currentIdx = Math.max(0, STAGES.indexOf(t.etapa_atual));
+  const chip = situacaoChip(t.situacao);
   const card = document.createElement("div");
   card.className = "tr-card";
-  card.style.setProperty("--dc", TR_COLORS[idx]);
-  const stepsHtml = STAGES.map((label, i) => {
+  card.style.setProperty("--dc", TR_COLORS[idx % TR_COLORS.length]);
+  const stepsHtml = STAGE_SHORT.map((label, i) => {
     let cls = "pending";
-    if (i < currentIdx) cls = "done";
+    if (isDone || i < currentIdx) cls = "done";
     else if (i === currentIdx) cls = "current";
-    return `<div class="step ${cls}"><div class="line"></div><div class="dot">${i < currentIdx ? "&#10003;" : i+1}</div><div class="lbl">${label}</div></div>`;
+    return `<div class="step ${cls}"><div class="line"></div><div class="dot">${(isDone || i < currentIdx) ? "&#10003;" : i + 1}</div><div class="lbl">${label}</div></div>`;
   }).join("");
+  const diasLabel = (t.dias != null && t.dias !== "ENTREGUE") ? `<span class="note" style="margin:0;">${t.dias} dia(s) para necessidade</span>` : "";
   card.innerHTML = `
     <div class="tr-card-head">
-      <h3>Transformador ${idx+1}</h3>
+      <h3>Transformador ${idx + 1}</h3>
       <div style="display:flex;align-items:center;gap:10px;">
         <span class="sp ${chip.cls}">${chip.label}</span>
-        ${cur.dias != null ? `<span class="note" style="margin:0;">${cur.dias} dia(s) na fase</span>` : ""}
+        ${diasLabel}
       </div>
     </div>
     <div class="stepper">${stepsHtml}</div>
-    ${cur.comentarios ? `<div class="note">${cur.comentarios}</div>` : ""}
+    <div class="note">${t.fornecedor || "—"} · OC ${t.oc || "—"} · SC ${t.sc || "—"}${t.observacao ? " · " + t.observacao : ""}</div>
   `;
   wegTransfWrap.appendChild(card);
 });
 
-/* ---------------- TAB 2: Documentos ---------------- */
-document.getElementById("weg-sub").textContent = `${wegProjetos.length} documentos previstos · compartilhados pelos 4 transformadores idênticos`;
-const wegBody = document.querySelector("#weg-table tbody");
-wegProjetos.forEach(d => {
-  const chip = wegStatusChip(d.status);
-  const tr = document.createElement("tr");
-  tr.innerHTML = `<td class="d">${d.descricao||"—"}</td>
-    <td>${d.rev||"—"}</td>
-    <td class="num">${d.revisoes ?? "—"}</td>
-    <td><span class="sp ${chip.cls}">${chip.label}</span></td>
-    <td class="num">${d.dias ?? "—"}</td>
-    <td class="d">${d.comentarios||"—"}</td>`;
-  wegBody.appendChild(tr);
-});
-
-/* ---------------- TAB 3: Transformadores (detalhe contratual) ---------------- */
+/* ---------------- TAB 2: Marcos Contratuais ---------------- */
 const marcos = RAW.marcos || [];
 function fmtDate(iso) { return iso ? new Date(iso).toLocaleDateString("pt-BR") : "—"; }
 function marcoStatusInfo(m) {
@@ -331,18 +292,14 @@ marcosGerais.forEach(m => {
 });
 
 const tfGrid = document.getElementById("tf-grid");
-TR_CODES.forEach((code, idx) => {
+trafos.forEach((t, idx) => {
   const nome = `Transformador ${idx + 1}`;
-  const rows = wegTransf[code] || [];
-  let currentIdx = 0;
-  rows.forEach((r, i) => { if (r.status) currentIdx = i; });
-  const cur = rows[currentIdx] || {};
-  const curChip = wegStatusChip(cur.status);
+  const curChip = situacaoChip(t.situacao);
   const meusMarcos = marcos.filter(m => m.transformador === nome);
 
   const card = document.createElement("div");
   card.className = "tf-card";
-  card.style.setProperty("--dc", TR_COLORS[idx]);
+  card.style.setProperty("--dc", TR_COLORS[idx % TR_COLORS.length]);
   const marcosHtml = meusMarcos.map(m => {
     const info = marcoStatusInfo(m);
     let fillPct = 0;
@@ -369,7 +326,7 @@ TR_CODES.forEach((code, idx) => {
       <h3>${nome}</h3>
       <span class="sp ${curChip.cls}">${curChip.label}</span>
     </div>
-    <div class="tf-current">Onde está: <b>${cur.descricao || "Engenharia"}</b>${cur.dias != null ? ` · ${cur.dias} dia(s) na fase` : ""}</div>
+    <div class="tf-current">Onde está: <b>${t.etapa_atual || "—"}</b>${(t.dias != null && t.dias !== "ENTREGUE") ? ` · ${t.dias} dia(s) para necessidade` : ""}</div>
     ${marcosHtml}
   `;
   tfGrid.appendChild(card);
