@@ -193,7 +193,7 @@
   <!-- ============================= TAB 1: EQUIPAMENTOS DE PÁTIO (filtro do Material Eletromecânico) ============================= -->
   <div class="tab-content active" id="tab-revisoes">
     <div class="panel" style="padding:12px 20px;">
-      <div class="panel-sub" style="margin:0;">Contrato fechado — mostra os 7 itens de pátio (disjuntor, chaves seccionadoras, TC, TP, para-raios) com o fornecedor final, SC e situação de entrega. É um recorte da aba <b>Material Eletromecânico</b>.</div>
+      <div class="panel-sub" style="margin:0;">Fase atual: <b>finalizar contratos</b> — mostra os 7 itens de pátio (disjuntor, chaves seccionadoras, TC, TP, para-raios) com o fornecedor em negociação, SC e situação de entrega. É um recorte da aba <b>Material Eletromecânico</b>.</div>
     </div>
     <div class="stat-row" id="stat-row-pt"></div>
 
@@ -453,10 +453,8 @@ function renderPtCharts(items) {
   };
   renderBarChart("chart-pt-situacao", sitData, lbl => SIT_BAR_COLOR[lbl] || "var(--s9)");
 
-  const faseCounts = {};
-  items.forEach(i => { const k = i.etapa_atual || "—"; faseCounts[k] = (faseCounts[k]||0) + 1; });
-  const faseData = PT_FASE_ORDER.filter(k => faseCounts[k]).map(k => ({ label: k, value: faseCounts[k] }));
-  renderBarChart("chart-pt-fase", faseData, lbl => PALETTE[PT_FASE_ORDER.indexOf(lbl) % PALETTE.length]);
+  const faseData = items.length ? [{ label: "Finalizar Contratos", value: items.length }] : [];
+  renderBarChart("chart-pt-fase", faseData, () => "var(--s1)");
 }
 
 const ptBody = document.querySelector("#patio-table tbody");
@@ -481,7 +479,7 @@ function renderPtTable() {
     tr.className = PT_ROW_CLS[i.situacao] || "";
     tr.innerHTML = `<td class="wrap">${i.item || "—"}</td><td>${i.obra || "—"}</td>
       <td>${i.fornecedor || "—"}</td><td>${i.sc || "—"}</td><td>${i.status_engenharia || "—"}</td>
-      <td>${i.etapa_atual || "—"}</td>
+      <td>Finalizar Contratos</td>
       <td><span class="chip ${chip.cls}">${chip.label}</span></td>
       <td class="num">${i.dias ?? "—"}</td><td>${fmtDate(i.data_necessidade)}</td>
       <td class="obs-cell" title="Clique para expandir">${i.observacao || "—"}</td>`;
