@@ -570,7 +570,7 @@ const CA_ROW_CLS = {
 const CA_OBRA_COLOR = { "SE PILAR": "var(--s1)", "SE RIO LARGO II": "var(--s2)", "LT": "var(--s3)" };
 function caSituacaoChip(s) { return { label: s || "—", cls: CA_SITUACAO_CLS[s] || "chip-neutral" }; }
 
-const caItems = RAW.curvaa.rows;
+const caItems = RAW.curvaa.rows.filter(i => i.pacote === "MATERIAIS ELETROMECÂNICOS");
 const CA_OBRAS = [...new Set(caItems.map(i => i.obra))];
 
 let caObraFilter = null, caSituacaoFilter = null;
